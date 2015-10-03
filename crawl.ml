@@ -4,6 +4,7 @@ open Order
 open Pagerank
 
 
+
 (* RandomWalkRanker and QuantumRanker are for karma questions only *)
 module MoogleRanker
   = InDegreeRanker (PageGraph) (PageScore)
