@@ -226,16 +226,53 @@ end
 (* DictSet: a functor that creates a SET by calling our           *)
 (* Dict.Make functor                                              *)
 (******************************************************************)
-(*
+
 module DictSet(C : COMPARABLE) : (SET with type elt = C.t) =
 struct
   module D = Dict.Make(struct
-      ??? fill this in!
+    type key = C.t
+    type value = C.t
+    let compare = C.compare
+    let string_of_key = C.string_of_t
+    let string_of_value = C.string_of_t
   end)
 
   type elt = D.key
   type set = D.dict
-  let empty = ???
+  let empty = D.empty
+  let is_empty (s:set) = D.is_empty s
+  let insert (e:elt) (s:set) = D.insert s e e
+  let singleton (e:elt) = insert e empty
+
+  let remove (e:elt) (s:set) = D.remove s e
+  let member (s:set) (e:elt) = D.member s e
+  let choose (s:set) =
+    let option1 = D.choose s in
+      match option1 with
+      | None -> None
+      | Some (x,y,z) -> (x,z)
+
+  let fold (f:(elt -> 'a -> 'a)) (a1:'a) (s:set) =
+    let f2 (e1:elt) : (elt -> elt -> 'a -> 'a) =
+
+  let rec union (s1:set) (s2:set) =
+    if (s2.is_empty) then
+      s1
+    else let tuple = choose s2 in
+         let new_s1 = insert (fst tuple) s1 in
+         union new_s1 (snd tuple)
+
+  let rec intersect_helper (s1:set) (s2:set) (r:set) =
+    if (s2.is_empty) then
+      r
+    else let tuple = choose s2 in
+         if (member s1 (fst tuple)) then
+           intersect_helper s1 (snd tuple) (insert (fst tuple) r)
+         else
+           intersect_helper s1 (snd tuple) r
+
+  let intersect (s1:set) (s2:set) =
+    intersect_helper s1 s2 empty
 
   (* implement the rest of the functions in the signature! *)
 
@@ -253,7 +290,7 @@ struct
   let run_tests () =
     ()
 end
-*)
+
 
 
 
