@@ -235,12 +235,23 @@ struct
     let compare = C.compare
     let string_of_key = C.string_of_t
     let string_of_value = C.string_of_t
+
+
+    let gen_key () = C.gen()
+    let gen_key_gt x () = C.gen_gt x ()
+    let gen_key_lt x () = C.gen_lt x ()
+    let gen_key_random () = C.gen_random ()
+    let gen_key_between x y () = None
+    let gen_value () = gen_key ()
+    let gen_pair () = let p = gen_key() in (p,p)
   end)
 
   type elt = D.key
   type set = D.dict
   let empty = D.empty
-  let is_empty (s:set) = D.is_empty s
+  let is_empty (s:set) =
+    s = empty
+
   let insert (e:elt) (s:set) = D.insert s e e
   let singleton (e:elt) = insert e empty
 
@@ -250,22 +261,27 @@ struct
     let option1 = D.choose s in
       match option1 with
       | None -> None
-      | Some (x,y,z) -> (x,z)
+      | Some (x,y,z) -> Some (x,z)
 
   let fold (f:(elt -> 'a -> 'a)) (a1:'a) (s:set) =
-    let f2 (e1:elt) : (elt -> elt -> 'a -> 'a) =
+    D.fold (fun a b x -> f b x) a1 s
+
+  let matchoption (t:(elt*set) option) =
+    match t with
+    | Some c -> c
+    | _ -> failwith "fail"
 
   let rec union (s1:set) (s2:set) =
-    if (s2.is_empty) then
+    if (is_empty s2) then
       s1
-    else let tuple = choose s2 in
+    else let tuple = matchoption (choose s2) in
          let new_s1 = insert (fst tuple) s1 in
          union new_s1 (snd tuple)
 
   let rec intersect_helper (s1:set) (s2:set) (r:set) =
-    if (s2.is_empty) then
+    if (is_empty s2) then
       r
-    else let tuple = choose s2 in
+    else let tuple = matchoption (choose s2) in
          if (member s1 (fst tuple)) then
            intersect_helper s1 (snd tuple) (insert (fst tuple) r)
          else

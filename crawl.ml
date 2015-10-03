@@ -74,13 +74,15 @@ let matchoption (vp: LinkSet.set option) =
 
 let matchoption2 (tp: (Pagerank.LinkSet.elt * Pagerank.LinkSet.set) option) =
   match tp with
-  | None -> failwith "nothing here"
+  | None -> failwith "nothing here2"
   | Some x -> x
 
 let matchoption3 (cs: Util.CrawlerServices.page option) =
   match cs with
-  | None -> failwith "nothing here"
+  | None -> failwith "nothing here3"
   | Some x -> x
+
+
 
 let rec addToWordDict (dict:WordDict.dict) (words:string list) (link:link) =
   match words with
@@ -113,14 +115,17 @@ let rec crawl (n:int) (frontier: LinkSet.set)
     let tuple = matchoption2 (LinkSet.choose frontier) in
     let link = fst tuple in
     let new_frontier = snd tuple in
-    let new_visited = LinkSet.insert link visited in
-    let page = matchoption3 (CrawlerServices.get_page link) in
-    let links = page.links in
-    let words = page.words in
-    let final_frontier = addToFrontier new_frontier new_visited links in
-    let new_dict = addToWordDict d words link in
-    crawl (n-1) final_frontier new_visited new_dict
 
+    if not ((CrawlerServices.get_page link) = None) then
+      let page = matchoption3 (CrawlerServices.get_page link) in
+      let new_visited = LinkSet.insert link visited in
+      let links = page.links in
+      let words = page.words in
+      let final_frontier = addToFrontier new_frontier new_visited links in
+      let new_dict = addToWordDict d words link in
+      crawl (n-1) final_frontier new_visited new_dict
+    else
+      crawl n new_frontier visited d
 
 
 let crawler () =
