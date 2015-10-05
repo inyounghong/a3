@@ -274,7 +274,7 @@ end
 (* BTDict: a functor that implements our DICT signature           *)
 (* using a balanced tree (2-3 trees)                              *)
 (******************************************************************)
-(*
+
 module BTDict(D:DICT_ARG) : (DICT with type key = D.key
 with type value = D.value) =
 struct
@@ -357,8 +357,8 @@ struct
 
   (* TODO:
    * Implement these to-string functions *)
-  let string_of_key = raise TODO
-  let string_of_value = raise TODO
+  let string_of_key = D.string_of_key
+  let string_of_value = D.string_of_value
   let string_of_dict (d: dict) : string = raise TODO
 
   (* Debugging function. This will print out the tree in text format.
@@ -375,7 +375,7 @@ struct
    *
    * Note that this tree is NOT balanced, because all the paths from (6,f)
    * to its leaves do NOT all have the same length. *)
-  let rec string_of_tree (d: dict) : string =
+   let rec string_of_tree (d: dict) : string =
     match d with
       | Leaf -> "Leaf"
       | Two(left,(k,v),right) -> "Two(" ^ (string_of_tree left)
@@ -632,18 +632,54 @@ struct
   let choose (d: dict) : (key * value * dict) option =
     raise TODO
 
+  let rec getHeight (d:dict) =
+    match d with
+      | Leaf -> 0
+      | Two(left,v,right) ->
+        let left_height = getHeight left in
+        let right_height = getHeight right in
+        if (left_height == -1) then
+          -1
+        else if (right_height == -1) then
+          -1
+        else
+          if not (left_height = right_height) then
+            -1
+          else
+            left_height + 1
+      | Three(left,v1,middle,v2,right) ->
+        let left_height = getHeight left in
+        let middle_height = getHeight middle in
+        let right_height = getHeight right in
+        if (left_height == -1) then
+          -1
+        else if (middle_height == -1) then
+          -1
+        else if (right_height == -1) then
+          -1
+        else (
+          if not (left_height = right_height) then
+            -1
+          else if not (left_height = middle_height) then
+            -1
+          else
+            left_height + 1)
+
   (* TODO:
    * Write a function that when given a 2-3 tree (represented by our
    * dictionary d), returns true if and only if the tree is "balanced",
    * where balanced means that the given tree satisfies the 2-3 tree
    * length invariants stated above and in the 2-3 tree handout. *)
 
-  (* How are you testing that you tree is balanced?
+  (* How are you testing that your tree is balanced?
    * ANSWER:
    *    _______________
    *)
   let rec balanced (d: dict) : bool =
-    raise TODO
+    if (getHeight d = -1) then
+      false
+    else
+      true
 
 
   (********************************************************************)
@@ -676,7 +712,7 @@ struct
     else
       (D.gen_key_random(), D.gen_value()) :: (generate_random_list (size - 1))
 
-(*
+
   let test_balance () =
     let d1 = Leaf in
     assert(balanced d1) ;
@@ -716,7 +752,7 @@ struct
                    D.gen_pair(),Leaf,D.gen_pair(),Two(Leaf,D.gen_pair(),Leaf))
     in
     assert(not (balanced d7)) ;
-    () *)
+    ()
 
 (*
   let test_remove_nothing () =
@@ -774,7 +810,7 @@ struct
     () *)
 
   let run_tests () =
-(*    test_balance() ; *)
+   test_balance() ;
 (*    test_remove_nothing() ;
     test_remove_from_nothing() ;
     test_remove_in_order() ;
@@ -783,7 +819,7 @@ struct
     ()
 
 end
-*)
+
 
 
 
@@ -801,10 +837,10 @@ let _ = IntStringListDict.run_tests()
  *
  * Uncomment out the lines below when you are ready to test your
  * 2-3 tree implementation. *)
-(*
+
 module IntStringBTDict = BTDict(IntStringDictArg)
 let _ = IntStringBTDict.run_tests()
-*)
+
 
 
 

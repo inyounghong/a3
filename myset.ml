@@ -236,7 +236,6 @@ struct
     let string_of_key = C.string_of_t
     let string_of_value = C.string_of_t
 
-
     let gen_key () = C.gen()
     let gen_key_gt x () = C.gen_gt x ()
     let gen_key_lt x () = C.gen_lt x ()
