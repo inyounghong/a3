@@ -350,7 +350,7 @@ struct
   (* How do we represent an empty dictionary with 2-3 trees? *)
   let empty : dict = Leaf
 
-  let rec treeToList (d:dict):in (key*value) list =
+  let rec treeToList (d:dict):(key*value) list =
     match d with
       | Leaf -> []
       | Two(left,(k,v),right) ->
@@ -483,8 +483,14 @@ struct
   and insert_downward_two ((k,v): pair) ((k1,v1): pair)
       (left: dict) (right: dict) : kicked =
     match D.compare (k) (k1) with
-    | Less -> insert_downward left k v
-    | Greater -> insert_downward right k v
+    | Less ->
+        (match left with
+          | Leaf -> insert_upward_two (k,v) Leaf left (k1,v1) right
+          | _ -> insert_downward left k v )
+    | Greater ->
+        (match right with
+          | Leaf -> insert_upward_two (k,v) Leaf right (k1,v1) left
+          | _ -> insert_downward right k v )
     | Eq -> insert_downward left k v
 
 
@@ -494,13 +500,22 @@ struct
   and insert_downward_three ((k,v): pair) ((k1,v1): pair) ((k2,v2): pair)
       (left: dict) (middle: dict) (right: dict) : kicked =
     match D.compare (k) (k1) with
-    | Less -> insert_downward left k v
+    | Less ->
+      (match left with
+          | Leaf -> insert_upward_three (k,v) Leaf left (k1,v1) (k2,v2) middle right
+          | _ -> insert_downward left k v )
     | Eq -> insert_downward right k v
-    | Greator ->
+    | Greater ->
       (match D.compare (k) (k2) with
-        | Less -> insert_downward middle k v
+        | Less ->
+            (match middle with
+              | Leaf -> insert_upward_three (k,v) Leaf middle (k1,v1) (k2,v2) left right
+              | _ -> insert_downward middle k v )
         | Eq -> insert_downward middle k v
-        | Greator ->  insert_downward right k v)
+        | Greater ->
+            (match right with
+              | Leaf -> insert_upward_three (k,v) Leaf right (k1,v1) (k2,v2) left middle
+              | _ -> insert_downward right k v ) )
 
 
   (* We insert (k,v) into our dict using insert_downward, which gives us
