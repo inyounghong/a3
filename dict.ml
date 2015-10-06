@@ -350,16 +350,32 @@ struct
   (* How do we represent an empty dictionary with 2-3 trees? *)
   let empty : dict = Leaf
 
+  let rec treeToList (d:dict): (key*value) list =
+    match d with
+      | Leaf -> []
+      | Two(left,(k,v),right) ->
+          let left1 = treeToList left in
+          let right1 = treeToList right in
+          (k,v)::(List.rev_append left1 right1)
+      | Three(left,(k1,v1), middle,(k2,v2),right) ->
+          let left1 = treeToList left in
+          let middle1 = treeToList middle in
+          let right1 = treeToList right in
+          (k1,v1)::(k2,v2)::(List.rev_append (List.rev_append left1 right1) middle1)
+
   (* TODO:
    * Implement fold. Read the specification in the DICT signature above. *)
   let rec fold (f: key -> value -> 'a -> 'a) (u: 'a) (d: dict) : 'a =
-    raise TODO
+    List.fold_left (fun a (k, v) -> f k v a) u (treeToList d)
 
   (* TODO:
    * Implement these to-string functions *)
   let string_of_key = D.string_of_key
   let string_of_value = D.string_of_value
-  let string_of_dict (d: dict) : string = raise TODO
+  let string_of_dict (d: dict) : string =
+    let f = (fun y (k,v) -> y ^ "\n key: " ^ D.string_of_key k ^
+      "; value: (" ^ D.string_of_value v ^ ")") in
+    List.fold_left f "" (treeToList d)
 
   (* Debugging function. This will print out the tree in text format.
    * Use this function to see the actual structure of your 2-3 tree. *
@@ -617,12 +633,29 @@ struct
    * in our dictionary and returns it as an option, or return None
    * if the key is not in our dictionary. *)
   let rec lookup (d: dict) (k: key) : value option =
-    raise TODO
+    match d with
+      | Leaf -> None
+      | Two(left,(k1,v1),right) ->
+          (match D.compare k k1 with
+            | Eq -> Some v1
+            | Greater -> lookup right k
+            | Less -> lookup left k)
+      | Three(left,(k1,v1),middle,(k2,v2),right) ->
+          (match D.compare k k1 with
+            | Eq -> Some v1
+            | Less -> lookup left k
+            | Greater ->
+                (match D.compare k k2 with
+                | Eq -> Some v2
+                | Greater -> lookup right k
+                | Less -> lookup middle k))
 
   (* TODO:
    * Write a function to test if a given key is in our dictionary *)
   let member (d: dict) (k: key) : bool =
-    raise TODO
+    match lookup d k with
+      | None -> false
+      | Some _ -> true
 
   (* TODO:
    * Write a function that removes any (key,value) pair from our
@@ -754,7 +787,7 @@ struct
     assert(not (balanced d7)) ;
     ()
 
-(*
+
   let test_remove_nothing () =
     let pairs1 = generate_pair_list 26 in
     let d1 = insert_list empty pairs1 in
@@ -807,15 +840,15 @@ struct
     List.iter (fun (k,_) -> assert(not (member r5 k))) pairs5 ;
     assert(r5 = empty) ;
     assert(balanced r5) ;
-    () *)
+    ()
 
   let run_tests () =
    test_balance() ;
-(*    test_remove_nothing() ;
+   test_remove_nothing() ;
     test_remove_from_nothing() ;
     test_remove_in_order() ;
     test_remove_reverse_order() ;
-    test_remove_random_order() ; *)
+    test_remove_random_order() ;
     ()
 
 end
