@@ -827,6 +827,43 @@ struct
     ()
 
 
+  let test_insert () =
+    (*insert pair into leaf*)
+    let d1 = Leaf in
+    let k1 = D.gen_key() in
+    let v1 = D.gen_value() in
+    let leaf_two = insert d1 k1 v1 in
+    assert(leaf_two=Two(Leaf,(k1,v1),Leaf)) ;
+
+    (*insert less than key into two tree*)
+    let k2 = D.gen_key_lt k1 () in
+    let leaf_three = insert leaf_two k2 v1 in
+    assert(leaf_three=Three(Leaf,(k2,v1),Leaf,(k1,v1),Leaf)) ;
+
+    (*insert greater than key into two tree*)
+    let k3 = D.gen_key_gt k1 () in
+    let leaf_three2 = insert leaf_two k3 v1 in
+    assert(leaf_three2=Three(Leaf,(k1,v1),Leaf,(k3,v1),Leaf)) ;
+
+    (*insert less than key into three tree*)
+    let k4 = D.gen_key_lt k2 () in
+    let twotwotwo = insert leaf_three k4 v1 in
+    assert(twotwotwo=Two(Two(Leaf,(k4,v1),Leaf),(k2,v1),leaf_two)) ;
+
+
+    (*make a new three tree with k4 and k1*)
+    let new_three = insert leaf_two k4 v1 in
+    let twotwotwo2 = insert new_three k2 v1 in
+    assert(twotwotwo2=twotwotwo) ;
+
+    let twotwotwo3 = insert leaf_three k3 v1 in
+    assert(twotwotwo3 = Two(Two(Leaf,(k2,v1),Leaf),(k1,v1),Two(Leaf,(k3,v1),Leaf))) ;
+
+    let threetwotwo = insert twotwotwo3 k4 v1 in
+    assert(threetwotwo = Two(Three(Leaf,(k4,v1),Leaf,(k2,v1),Leaf),(k1,v1),Two(Leaf,(k3,v1),Leaf))) ;
+
+    ()
+
   let test_remove_nothing () =
     let pairs1 = generate_pair_list 26 in
     let d1 = insert_list empty pairs1 in
@@ -883,11 +920,11 @@ struct
 
   let run_tests () =
    test_balance() ;
-   test_remove_nothing() ;
+   (* test_remove_nothing() ;
     test_remove_from_nothing() ;
     test_remove_in_order() ;
     test_remove_reverse_order() ;
-    test_remove_random_order() ;
+    test_remove_random_order() ; *)
     ()
 
 end
