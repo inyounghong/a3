@@ -350,7 +350,7 @@ struct
   (* How do we represent an empty dictionary with 2-3 trees? *)
   let empty : dict = Leaf
 
-  let rec treeToList (d:dict): (key*value) list =
+  let rec treeToList (d:dict):in (key*value) list =
     match d with
       | Leaf -> []
       | Two(left,(k,v),right) ->
@@ -471,23 +471,37 @@ struct
    * with the appropriate arguments. *)
   let rec insert_downward (d: dict) (k: key) (v: value) : kicked =
     match d with
-      | Leaf -> raise TODO (* base case! see handout *)
-      | Two(left,n,right) -> raise TODO (* mutual recursion *)
-      | Three(left,n1,middle,n2,right) -> raise TODO (* mutual recursion *)
+      | Leaf -> Up(Leaf, (k, v), Leaf)
+      | Two(left,n,right) ->
+          insert_downward_two (k, v) (fst n, snd n) left right
+      | Three(left,n1,middle,n2,right) ->
+          insert_downward_three (k, v) (fst n1, snd n1) (fst n2, snd n2) left middle right
 
   (* Downward phase on a Two node. (k,v) is the (key,value) we are inserting,
    * (k1,v1) is the (key,value) of the current Two node, and left and right
    * are the two subtrees of the current Two node. *)
   and insert_downward_two ((k,v): pair) ((k1,v1): pair)
       (left: dict) (right: dict) : kicked =
-    raise TODO
+    match D.compare (k) (k1) with
+    | Less -> insert_downward left k v
+    | Greater -> insert_downward right k v
+    | Eq -> insert_downward left k v
+
 
   (* Downward phase on a Three node. (k,v) is the (key,value) we are inserting,
    * (k1,v1) and (k2,v2) are the two (key,value) pairs in our Three node, and
    * left, middle, and right are the three subtrees of our current Three node *)
   and insert_downward_three ((k,v): pair) ((k1,v1): pair) ((k2,v2): pair)
       (left: dict) (middle: dict) (right: dict) : kicked =
-    raise TODO
+    match D.compare (k) (k1) with
+    | Less -> insert_downward left k v
+    | Eq -> insert_downward right k v
+    | Greator ->
+      (match D.compare (k) (k2) with
+        | Less -> insert_downward middle k v
+        | Eq -> insert_downward middle k v
+        | Greator ->  insert_downward right k v)
+
 
   (* We insert (k,v) into our dict using insert_downward, which gives us
    * "kicked" up configuration. We return the tree contained in the "kicked"
