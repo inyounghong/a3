@@ -409,7 +409,10 @@ struct
    * result of performing the upward phase on w. *)
   let insert_upward_two (w: pair) (w_left: dict) (w_right: dict)
       (x: pair) (x_other: dict) : kicked =
-    raise TODO
+    match D.compare (fst w) (fst x) with
+    | Greater -> Done( Three(x_other, x, w_left, w, w_right))
+    | Less -> Done(Three(w_left, w, w_right, x, x_other))
+    | Eq -> Done(Three(w_left, w, w_right, x, x_other))
 
   (* Upward phase for w where its parent is a Three node whose (key,value) is x.
    * One of x's children is w, and of the two remaining children,
@@ -425,7 +428,14 @@ struct
    * new tree as a result of performing the upward phase on w. *)
   let insert_upward_three (w: pair) (w_left: dict) (w_right: dict)
       (x: pair) (y: pair) (other_left: dict) (other_right: dict) : kicked =
-    raise TODO
+    match D.compare (fst w) (fst x) with
+    | Less -> Up(Two(w_left, w, w_right), x, Two(other_left, y, other_right))
+    | Eq   -> Up(Two(w_left, w, w_right), x, Two(other_left, y, other_right))
+    | Greater ->
+        (match D.compare (fst w) (fst y) with
+          | Less -> Up(Two(other_left, x, w_left), w, Two(w_right, y, other_right))
+          | Greater -> Up(Two(other_left, x, other_right), y, Two(w_left, w, w_right))
+          | Eq -> Up(Two(other_left, x, other_right), y, Two(w_left, w, w_right)) )
 
   (* Downward phase for inserting (k,v) into our dictionary d.
    * The downward phase returns a "kicked" up configuration, where
