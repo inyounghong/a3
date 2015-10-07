@@ -246,12 +246,30 @@ struct
     ()
 
   let test_lookup () =
+
+    let pairs1 = generate_pair_list 26 in
+    let d1 = insert_list empty pairs1 in
+    List.iter (fun (k,v) -> assert(lookup d1 k = Some v)) pairs1 ;
+    List.iter (fun (k,v) -> assert(lookup empty k = None)) pairs1 ;
     ()
 
   let test_choose () =
+    assert(choose empty = None) ;
+    let pairs1 = generate_pair_list 26 in
+    let result1 =
+    (match pairs1 with
+    | [] -> failwith "not possible"
+    | (k,v)::rest -> Some(k,v,rest)) in
+
+    let d1 = insert_list empty pairs1 in
+    assert(choose d1 = result1) ;
     ()
 
   let test_member () =
+    let pairs1 = generate_pair_list 26 in
+    let d1 = insert_list empty pairs1 in
+    List.iter (fun (k,v) -> assert(member d1 k = true)) pairs1 ;
+    List.iter (fun (k,v) -> assert(member empty k = false)) pairs1 ;
     ()
 
   let test_fold () =
@@ -950,12 +968,17 @@ struct
 
     (*insert less than key into two tree*)
     let k2 = D.gen_key_lt k1 () in
+    let v2 = D.gen_value () in
+    assert(not (v1 = v2)) ;
     let leaf_three = insert leaf_two k2 v1 in
+
     (* Printf.printf "%s" (string_of_tree leaf_three); *)
     assert(leaf_three=Three(Leaf,(k2,v1),Leaf,(k1,v1),Leaf)) ;
 
     (* insert same key *)
     let same1 = insert leaf_three k2 v1 in
+    let same11 = insert leaf_three k2 v2 in
+    assert(same11=Three(Leaf,(k2,v2),Leaf,(k1,v1),Leaf));
     (* Printf.printf "\n%s\n" (string_of_tree same1); *)
     assert(same1=leaf_three) ;
 
@@ -977,7 +1000,9 @@ struct
 
     (*insert same key*)
     let same2 = insert twotwotwo2 k2 v1 in
+    let same22 = insert twotwotwo2 k2 v2 in
     assert(same2=twotwotwo2);
+    assert(same22=Two(Two(Leaf,(k4,v1),Leaf),(k2,v2),leaf_two)) ;
 
     let twotwotwo3 = insert leaf_three k3 v1 in
     assert(twotwotwo3 = Two(Two(Leaf,(k2,v1),Leaf),(k1,v1),Two(Leaf,(k3,v1),Leaf))) ;
@@ -1001,6 +1026,8 @@ struct
     let all1 = insert all0 k2 v1 in
     let all2 = insert all1 k5 v1 in
     assert(all2 = Two(Two(Leaf,(k2,v1),Leaf),(k3,v1),Two(Leaf,(k5,v1),Leaf))) ;
+    let all22 = insert all2 k5 v2 in
+    assert(all22=Two(Two(Leaf,(k2,v1),Leaf),(k3,v1),Two(Leaf,(k5,v2),Leaf))) ;
     let all3 = insert all2 k4 v1 in
     let all4 = insert all3 k7 v1 in
     let all5 = insert all4 k1 v1 in
