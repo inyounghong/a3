@@ -410,13 +410,6 @@ struct
     | Up(ll,(kk1,vv1),rr) -> Two(ll,(kk1,vv1),rr)
     | Done xx -> xx
 
-
-  let prints (k:kicked) =
-    Printf.printf "\n%s\n" (string_of_tree (uptotree k));
-    k
-  let prints1 (k:kicked) =
-    Printf.printf "\nhere-----%s\n" (string_of_tree (uptotree k));
-    k
   (* Upward phase for w where its parent is a Two node whose (key,value) is x.
    * One of x's children is w, and the other child is x_other. This function
    * should return a kicked-up configuration containing the new tree as a
