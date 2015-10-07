@@ -495,80 +495,62 @@ struct
     Printf.printf ""; *)
     match d with
       | Leaf -> (Up(Leaf, (k, v), Leaf)) ;
+      | Two(Leaf,(k1,v1),Leaf) ->
+          (match D.compare k k1 with
+            | Less ->
+                Done(Three(Leaf,(k,v),Leaf,(k1,v1),Leaf))
+            | Greater ->
+                Done(Three(Leaf,(k1,v1),Leaf,(k,v),Leaf))
+            | Eq ->
+                Done(Two(Leaf,(k1,v),Leaf))
+          )
       | Two(left,n,right) ->
-        (* Printf.printf "\nthis tree2 %s\n" (string_of_tree (Two(left,n,right))); *)
-        (match left with
-        | Leaf ->
-          (* Printf.printf "\nhere\n"; *)
-          (match D.compare k (fst n) with
-          | Less -> (insert_upward_two (k, v) Leaf Leaf n right)
-          | Greater -> insert_upward_two (k, v) Leaf Leaf n left
-          | _ -> Done(Two(left,n,right)))
-        | _ ->
           (match D.compare k (fst n) with
           | Less ->
             let result1 =
             (match left with
             | Leaf -> insert_downward_two (k,v) n left right
-            | _ -> insert_downward_two (k,v) n left right
-(*             | Two(l1,n1,r1) -> (insert_downward_two (k, v) n left right)
-            Printf.printf "%s" (string_of_tree Two(l1,n1,r1));
-            | Three(l1,n2,m1,n3,r1) -> insert_downward_three (k, v) (fst n2, snd n2) (fst n3, snd n3) l1 m1 r1 *)) in
-(*             Printf.printf "\n result1" ;
-            Printf.printf "\n%s\n" (string_of_tree (uptotree result1)); *)
+            | _ -> insert_downward_two (k,v) n left right ) in
+
             (match result1 with
             | Up(ll,(kk1,vv1),rr) -> (insert_upward_two (kk1,vv1) ll rr n right)
             | Done xx ->  (Done(Two(xx,n,right))))
-(*             let rr2 =
-            (match result1 with
-            | Up(ll,(kk1,vv1),rr) -> uptotree (insert_upward_two (kk1,vv1) ll rr n right)
-            | Done xx -> xx) in
-            Up(rr2,n,right) *)
           | Greater ->
             let result1 =
             (match right with
             | Leaf -> insert_downward_two (k, v) n left right
             | _ -> insert_downward_two (k, v) n left right
-(*             | Two(l1,n1,r1) -> insert_downward_two (k, v) (fst n1, snd n1) l1 r1
-            | Three(l1,n2,m1,n3,r1) -> insert_downward_three (k, v) (fst n2, snd n2) (fst n3, snd n3) l1 m1 r1 *)) in
+            ) in
             (match result1 with
             | Up(ll,(kk1,vv1),rr) -> (insert_upward_two (kk1,vv1) ll rr n left)
             | Done xx -> Done(Two(left,n,xx)))
-(*             let rr2 =
-            (match result1 with
-            | Up(ll,(kk1,vv1),rr) -> uptotree (insert_upward_two (kk1,vv1) ll rr n left)
-            | Done xx -> xx) in
-            Up(left,n,rr2) *)
-          | Eq -> Done(Two(left,n,right))))
-      | Three(left,n1x,middle,n2x,right) ->
-(*       Printf.printf "\nthis tree %s\n" (string_of_tree (Three(left,n1x,middle,n2x,right))); *)
-        (match left with
-        | Leaf ->
-          (match D.compare k (fst n1x) with
-          | Less -> insert_upward_three (k, v) Leaf Leaf n1x n2x middle right
-          | Eq -> Done(Three(left,n1x,middle,n2x,right))
+
+          | Eq -> Done(Two(left,(k,v),right)))
+
+      | Three(Leaf,n1x,Leaf,n2x,Leaf) ->
+        (match D.compare k (fst n1x) with
+          | Less ->
+              insert_upward_three (k, v) Leaf Leaf n1x n2x Leaf Leaf
+          | Eq ->
+            Done(Three(Leaf,(k,v),Leaf,n2x,Leaf))
           | Greater ->
             (match D.compare k (fst n2x) with
-            | Less -> insert_upward_three (k, v) Leaf Leaf n1x n2x left right
-            | Greater -> insert_upward_three (k, v) Leaf Leaf n1x n2x left middle
-            | _ -> Done(Three(left,n1x,middle,n2x,right))))
-        | _ ->
+            | Less -> insert_upward_three (k, v) Leaf Leaf n1x n2x Leaf Leaf
+            | Greater -> insert_upward_three (k, v) Leaf Leaf n1x n2x Leaf Leaf
+            | Eq -> Done(Three(Leaf,n1x,Leaf,(k,v),Leaf))))
+
+      | Three(left,n1x,middle,n2x,right) ->
           (match D.compare k (fst n1x) with
           | Less ->
             let result1 =
             (match left with
             | Leaf -> insert_downward_three (k, v) (fst n1x, snd n1x) (fst n2x, snd n2x) left middle right
             | _ -> insert_downward_three (k, v) n1x n2x left middle right
-(*             | Two(l1,n1,r1) -> insert_downward_two (k, v) (fst n1, snd n1) l1 r1
-            | Three(l1,n2,m1,n3,r1) -> insert_downward_three (k, v) (fst n2, snd n2) (fst n3, snd n3) l1 m1 r1 *)) in
+            ) in
             (match result1 with
             | Up(ll,(kk1,vv1),rr) -> insert_upward_three (kk1,vv1) ll rr n1x n2x middle right
             | Done xx -> Done(Three(xx,n1x,middle,n2x,right)))
-(*             let rr2 =
-            (match result1 with
-            | Up(ll,(kk1,vv1),rr) -> uptotree (insert_upward_three (kk1,vv1) ll rr n1x n2x middle right)
-            | Done xx -> xx) in
-            Done(Three(rr2,n1x,middle,n2x,right)) *)
+
           | Greater ->
             (match D.compare k (fst n2x) with
             | Less ->
@@ -576,33 +558,23 @@ struct
               (match middle with
               | Leaf -> insert_downward_three (k, v) n1x n2x left middle right
               | _ -> insert_downward_three (k, v) n1x n2x left middle right
-(*               | Two(l1,n1,r1) -> insert_downward_two (k, v) (fst n1, snd n1) l1 r1
-              | Three(l1,n2,m1,n3,r1) -> insert_downward_three (k, v) (fst n2, snd n2) (fst n3, snd n3) l1 m1 r1 *)) in
+              ) in
               (match result1 with
               | Up(ll,(kk1,vv1),rr) -> insert_upward_three (kk1,vv1) ll rr n1x n2x left right
               | Done xx -> Done(Three(left,n1x,xx,n2x,right)))
-(*               let rr2 =
-              (match result1 with
-              | Up(ll,(kk1,vv1),rr) -> uptotree (insert_upward_three (kk1,vv1) ll rr n1x n2x left right)
-              | Done xx -> xx) in
-              Done(Three(left,n1x,rr2,n2x,right)) *)
+
             | Greater ->
               let result1 =
               (match right with
               | Leaf -> insert_downward_three (k, v) (fst n1x, snd n1x) (fst n2x, snd n2x) left middle right
               | _ -> insert_downward_three (k, v) n1x n2x left middle right
-(*               | Two(l1,n1,r1) -> insert_downward_two (k, v) (fst n1, snd n1) l1 r1
-              | Three(l1,n2,m1,n3,r1) -> insert_downward_three (k, v) (fst n2, snd n2) (fst n3, snd n3) l1 m1 r1 *)) in
+              ) in
               (match result1 with
               | Up(ll,(kk1,vv1),rr) -> insert_upward_three (kk1,vv1) ll rr n1x n2x left middle
               | Done xx -> Done(Three(left,n1x,middle,n2x,xx)))
-(*               let rr2 =
-              (match result1 with
-              | Up(ll,(kk1,vv1),rr) -> uptotree (insert_upward_three (kk1,vv1) ll rr n1x n2x left middle)
-              | Done xx -> xx) in
-              Done(Three(left,n1x,middle,n2x,rr2)) *)
-            | Eq -> Done(Three(left,n1x,middle,n2x,right)))
-          | Eq -> Done(Three(left,n1x,middle,n2x,right))))
+
+            | Eq -> Done(Three(left,n1x,middle,(k,v),right)))
+          | Eq -> Done(Three(left,(k,v),middle,n2x,right)))
           (* insert_downward_three (k, v) (fst n1, snd n1) (fst n2, snd n2) left middle right *)
 
   (* Downward phase on a Two node. (k,v) is the (key,value) we are inserting,
