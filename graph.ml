@@ -119,10 +119,8 @@ struct
   (* Adds the nodes if they aren't already present. *)
   let add_edge g src dst =
     let new_neighbors = match EdgeDict.lookup g.edges src with
-      | None ->
-          NeighborSet.insert dst NeighborSet.empty
-      | Some s ->
-          NeighborSet.insert dst s
+      | None -> NeighborSet.insert dst NeighborSet.empty
+      | Some s -> NeighborSet.insert dst s
     in
       (* ensure both src and dst in the graph before adding edge *)
     let g' = (add_node (add_node g src) dst) in
@@ -175,15 +173,6 @@ struct
   let g = G.add_edge G.empty "a" "b"
   let g2 = G.add_edge g "a" "c"
 
-  let edges = G.outgoing_edges g "a"
-  let edges2 = match edges with | None -> failwith "hi" | Some x -> x
-
-  let rec printedges lst =
-    match lst with
-    | [] -> ""
-    | (n1,n2)::tl -> "("^( n1)^")"^ (printedges tl)
-
-
   let deopt_len lo =
     match lo with
       | None -> 0
@@ -200,19 +189,6 @@ struct
       | Some n -> n
 
   let _ = (
-
-    (* Printf.printf "Edge: %s\n\n" (string_of_dict g.edges); *)
-
-
-    Printf.printf "Edges %s\n\n" (printedges edges2);
-
-    Printf.printf "g: %s\n" (G.string_of_graph g);
-    Printf.printf "g2: %s\n" (G.string_of_graph g2);
-(*     Printf.printf "dict: %s\n" (Dict.string_of_dict g2.edges); *)
-
-    Printf.printf "length: %i \n" (deopt_len (G.outgoing_edges g2 "a"));
-    Printf.printf "length: %i \n" (deopt_len (G.outgoing_edges g2 "b"));
-    Printf.printf "length: %i \n" (deopt_len (G.outgoing_edges g2 "c"));
     assert (G.has_node g "a");
     assert (G.has_node g "b");
     assert (G.has_node g "c" = false);
