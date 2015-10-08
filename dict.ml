@@ -959,7 +959,6 @@ struct
     (*insert less than key into two tree*)
     let k2 = D.gen_key_lt k1 () in
     let v2 = D.gen_value () in
-    \
     let leaf_three = insert leaf_two k2 v1 in
 
     (* Printf.printf "%s" (string_of_tree leaf_three); *)
