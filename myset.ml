@@ -174,12 +174,35 @@ struct
     else (C.gen_random()) :: (generate_random_list (size - 1))
 
   let test_insert () =
-    let elts = generate_random_list 100 in
-    let s1 = insert_list empty elts in
-    List.iter (fun k -> assert(member s1 k)) elts ;
+    (* Insert elements into empty list *)
+    let elts1 = generate_random_list 100 in
+    let s1 = insert_list empty elts1 in
+    List.iter (fun k -> assert(member s1 k)) elts1 ;
+
+    (* Inserting into existing list *)
+    let elts2 = generate_random_list 10 in
+    let s2 = insert_list s1 elts2 in
+    List.iter (fun k -> assert(member s2 k)) elts1 ;
+    List.iter (fun k -> assert(member s2 k)) elts2 ;
+
+    (* Inserting the same element into list *)
+    let elt1 = C.gen_random () in
+    let s3 = insert elt1 empty in
+    let s4 = insert elt1 s3 in
+    assert(s3 = s4);
     ()
 
   let test_remove () =
+    (* Remove from empty list -> empty list *)
+    let elt1 = C.gen_random () in
+    assert((remove elt1 empty) = empty);
+
+    (* Remove element that isn't in list -> same list *)
+    let elt2 = C.gen_gt elt1 () in
+    let s4 = insert elt1 empty in
+    assert((remove elt2 s4) = s4);
+
+    (* Remove elements from list *)
     let elts = generate_random_list 100 in
     let s1 = insert_list empty elts in
     let s2 = List.fold_right (fun k r -> remove k r) elts s1 in
@@ -187,6 +210,7 @@ struct
     ()
 
   let test_union () =
+    (* Check union of two lists *)
     let elts = generate_random_list 50 in
     let elts2 = generate_random_list 50 in
     let s1 = insert_list empty elts in
@@ -194,11 +218,20 @@ struct
     let s3 = union s1 s2 in
     List.iter (fun k -> assert(member s3 k)) elts ;
     List.iter (fun k -> assert(member s3 k)) elts2 ;
+
+    (* Check union of empty lists -> empty list*)
     let s4 = union empty empty in
     assert(is_empty s4);
+
+    (* Check union of list and empty list -> same list*)
+    let s5 = union empty s1 in
+    let s6 = union s1 empty in
+    assert(s5 = s1);
+    assert(s6 = s1);
     ()
 
   let test_intersect () =
+    (* Check intersection of two large random lists *)
     let elts = generate_random_list 100 in
     let elts2 = generate_random_list 100 in
     let s1 = insert_list empty elts in
@@ -209,23 +242,58 @@ struct
         if (member s3 k) then
           (member s2 k) && (member s1 k)
         else
-          ((not (member s2 k)) || (not(member s1 k)) ))) elts ;
+          not (member s2 k))) elts ;
+    List.iter (fun k ->
+      assert(
+        if (member s3 k) then
+          (member s2 k) && (member s1 k)
+        else
+          not(member s1 k))) elts2 ;
+
+    (* Check intersection of overlapping lists *)
+    let elt1 = C.gen_random () in
+    let elt2 = C.gen_gt elt1 () in
+    let elt3 = C.gen_gt elt2 () in
+    let elt4 = C.gen_gt elt3 () in
+    let ss1 = insert_list empty (elt1::elt2::elt3::[]) in
+    let ss2 = insert_list empty (elt2::elt3::elt4::[]) in
+    let inter1 = intersect ss1 ss2 in
+    assert(member inter1 elt2);
+    assert(member inter1 elt3);
+    assert(not(member inter1 elt1));
+    assert(not(member inter1 elt4));
+
+    (* Check intersection of non-overlapping lists -> empty *)
+    let ss3 = insert_list empty (elt1::elt2::[]) in
+    let ss4 = insert_list empty (elt3::elt4::[]) in
+    let inter2 = intersect ss3 ss4 in
+    assert(is_empty inter2);
+
+    (* Check intersection of list and empty list -> empty *)
     let s4 = intersect s1 empty in
     assert (is_empty s4);
+
+    (* Check intersection of same list -> same list *)
     let s5 = intersect s1 s1 in
     assert (not(is_empty s5));
     assert (s5 = s1);
     ()
 
   let test_member () =
+    (* Check members of list -> all true *)
     let elts = generate_random_list 100 in
     let s1 = insert_list empty elts in
     List.iter (fun k -> assert(member s1 k)) elts ;
+
+    (* Member of empty list -> all false *)
     List.iter (fun k -> assert(not(member empty k))) elts ;
     ()
 
   let test_choose () =
+    (* Choose from empty list -> None *)
     assert (choose empty = None);
+
+    (* Choose from list *)
     let elts = generate_random_list 10 in
     let s1 = insert_list empty elts in
     let el = match (choose s1) with | None -> failwith "no list" | Some x -> x in
@@ -361,6 +429,8 @@ struct
   let rec generate_random_list (size: int) : elt list =
     if size <= 0 then []
     else (C.gen_random()) :: (generate_random_list (size - 1))
+
+
 
   let test_insert () =
     (* Inserting into empty list *)
