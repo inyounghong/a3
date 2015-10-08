@@ -57,7 +57,10 @@ let print s =
 (*    PART 1: CRAWLER                                                  *)
 (***********************************************************************)
 
-let rec addToFrontier (frontier: LinkSet.set) (visited:LinkSet.set) (links:link list) =
+(* Adds any non-visited links from [links] to the frontier and returns the
+   frontier *)
+let rec addToFrontier (frontier: LinkSet.set) (visited:LinkSet.set)
+                      (links:link list) =
   match links with
   | [] -> frontier
   | hd::tl ->
@@ -67,29 +70,17 @@ let rec addToFrontier (frontier: LinkSet.set) (visited:LinkSet.set) (links:link 
     else
       addToFrontier frontier visited tl
 
-let matchoption (vp: LinkSet.set option) =
-  match vp with
-  | None -> LinkSet.empty
-  | Some x -> x
-
-let matchoption2 (tp: (Pagerank.LinkSet.elt * Pagerank.LinkSet.set) option) =
-  match tp with
-  | None -> failwith "nothing here2"
-  | Some x -> x
-
-let matchoption3 (cs: Util.CrawlerServices.page option) =
-  match cs with
-  | None -> failwith "nothing here3"
-  | Some x -> x
-
-
-
+(* Adds words in [words] with the corresponding link to [dict], and returns
+  the final [dict] *)
 let rec addToWordDict (dict:WordDict.dict) (words:string list) (link:link) =
   match words with
   | [] -> dict
   | hd::tl ->
     if (WordDict.member dict hd) then
-      let links = matchoption (WordDict.lookup dict hd) in
+      let links =
+        (match (WordDict.lookup dict hd) with
+          | Some x -> x
+          | None -> LinkSet.empty) in
       let new_links = LinkSet.insert link links in
       let new_dict = WordDict.insert dict hd new_links in
       addToWordDict new_dict tl link
@@ -109,15 +100,22 @@ let rec addToWordDict (dict:WordDict.dict) (words:string list) (link:link) =
  * reached the maximum number of links (n) or the frontier is empty. *)
 let rec crawl (n:int) (frontier: LinkSet.set)
     (visited : LinkSet.set) (d:WordDict.dict) : WordDict.dict =
+  (* Frontier is empty or max n is hit *)
   if (n = 0 || LinkSet.is_empty frontier) then
     d
   else
-    let tuple = matchoption2 (LinkSet.choose frontier) in
+    let tuple =
+      (match (LinkSet.choose frontier) with
+        | Some x -> x
+        | _ -> failwith "empty linkset") in
     let link = fst tuple in
     let new_frontier = snd tuple in
 
     if not ((CrawlerServices.get_page link) = None) then
-      let page = matchoption3 (CrawlerServices.get_page link) in
+      let page =
+        (match (CrawlerServices.get_page link) with
+          | Some x -> x
+          | _ -> failwith "no page" ) in
       let new_visited = LinkSet.insert link visited in
       let links = page.links in
       let words = page.words in
