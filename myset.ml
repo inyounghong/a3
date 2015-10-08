@@ -315,7 +315,7 @@ struct
     (* Choose from list *)
     let elts = generate_random_list 10 in
     let s1 = insert_list empty elts in
-    let el = match (choose s1) with | None -> failwith "no list" | Some x -> x in
+    let el =match (choose s1) with | None -> failwith "no list" | Some x -> x in
     assert((member s1 (fst el)) && (not(member (snd el) (fst el)))) ;
     ()
 
