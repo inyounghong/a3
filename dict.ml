@@ -863,7 +863,8 @@ struct
 
   (* How are you testing that your tree is balanced?
    * ANSWER:
-   *    _______________
+   *    use getHeight as helper
+        if getHeight returns -1 then the tree is not balanced
    *)
   (*the balanced function takes in an dictionary and returns a bool
   uses getHeight as helper*)
