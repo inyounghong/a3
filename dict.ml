@@ -549,20 +549,12 @@ struct
       | Two(left,n,right) ->
           (match D.compare k (fst n) with
           | Less ->
-            let result1 =
-            (match left with
-            | Leaf -> insert_downward_two (k,v) n left right
-            | _ -> insert_downward_two (k,v) n left right ) in
-
+            let result1 = insert_downward_two (k,v) n left right in
             (match result1 with
             | Up(ll,(kk1,vv1),rr) -> (insert_upward_two (kk1,vv1) ll rr n right)
             | Done xx ->  (Done(Two(xx,n,right))))
           | Greater ->
-            let result1 =
-            (match right with
-            | Leaf -> insert_downward_two (k, v) n left right
-            | _ -> insert_downward_two (k, v) n left right
-            ) in
+            let result1 = insert_downward_two (k, v) n left right in
             (match result1 with
             | Up(ll,(kk1,vv1),rr) -> (insert_upward_two (kk1,vv1) ll rr n left)
             | Done xx -> Done(Two(left,n,xx)))
@@ -584,11 +576,7 @@ struct
       | Three(left,n1x,middle,n2x,right) ->
           (match D.compare k (fst n1x) with
           | Less ->
-            let result1 =
-            (match left with
-            | Leaf -> insert_downward_three (k, v) (fst n1x, snd n1x) (fst n2x, snd n2x) left middle right
-            | _ -> insert_downward_three (k, v) n1x n2x left middle right
-            ) in
+            let result1 = insert_downward_three (k, v) n1x n2x left middle right in
             (match result1 with
             | Up(ll,(kk1,vv1),rr) -> insert_upward_three (kk1,vv1) ll rr n1x n2x middle right
             | Done xx -> Done(Three(xx,n1x,middle,n2x,right)))
@@ -596,21 +584,13 @@ struct
           | Greater ->
             (match D.compare k (fst n2x) with
             | Less ->
-              let result1 =
-              (match middle with
-              | Leaf -> insert_downward_three (k, v) n1x n2x left middle right
-              | _ -> insert_downward_three (k, v) n1x n2x left middle right
-              ) in
+              let result1 = insert_downward_three (k, v) n1x n2x left middle right in
               (match result1 with
               | Up(ll,(kk1,vv1),rr) -> insert_upward_three (kk1,vv1) ll rr n1x n2x left right
               | Done xx -> Done(Three(left,n1x,xx,n2x,right)))
 
             | Greater ->
-              let result1 =
-              (match right with
-              | Leaf -> insert_downward_three (k, v) (fst n1x, snd n1x) (fst n2x, snd n2x) left middle right
-              | _ -> insert_downward_three (k, v) n1x n2x left middle right
-              ) in
+              let result1 = insert_downward_three (k, v) n1x n2x left middle right in
               (match result1 with
               | Up(ll,(kk1,vv1),rr) -> insert_upward_three (kk1,vv1) ll rr n1x n2x left middle
               | Done xx -> Done(Three(left,n1x,middle,n2x,xx)))
