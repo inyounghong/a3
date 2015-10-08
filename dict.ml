@@ -273,6 +273,19 @@ struct
     ()
 
   let test_fold () =
+    let pairs1 = generate_pair_list 26 in
+    let d1 = insert_list empty pairs1 in
+    let rec makestr (l:(key*value) list) =
+      match l with
+      | [] -> ""
+      | (k,v)::tail -> (string_of_key k)^(string_of_value v)^(makestr tail) in
+    let str = makestr (List.rev pairs1) in
+    let f1 (k:key) (v:value) (s:string) =
+      ((string_of_key k)^(string_of_value v)^s) in
+    (assert (fold f1 "" d1 = str));
+    (*empty*)
+    (assert (fold f1 "" empty = ""));
+
     ()
 
   let run_tests () =

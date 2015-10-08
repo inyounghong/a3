@@ -187,27 +187,80 @@ struct
     ()
 
   let test_union () =
+    let elts = generate_random_list 50 in
+    let elts2 = generate_random_list 50 in
+    let s1 = insert_list empty elts in
+    let s2 = insert_list empty elts2 in
+    let s3 = union s1 s2 in
+    List.iter (fun k -> assert(member s3 k)) elts ;
+    List.iter (fun k -> assert(member s3 k)) elts2 ;
+    let s4 = union empty empty in
+    assert(is_empty s4);
     ()
 
   let test_intersect () =
+    let elts = generate_random_list 100 in
+    let elts2 = generate_random_list 100 in
+    let s1 = insert_list empty elts in
+    let s2 = insert_list empty elts2 in
+    let s3 = intersect s1 s2 in
+    List.iter (fun k ->
+      assert(
+        if (member s3 k) then
+          (member s2 k) && (member s1 k)
+        else
+          ((not (member s2 k)) || (not(member s1 k)) ))) elts ;
+    let s4 = intersect s1 empty in
+    assert (is_empty s4);
+    let s5 = intersect s1 s1 in
+    assert (not(is_empty s5));
+    assert (s5 = s1);
     ()
 
   let test_member () =
+    let elts = generate_random_list 100 in
+    let s1 = insert_list empty elts in
+    List.iter (fun k -> assert(member s1 k)) elts ;
+    List.iter (fun k -> assert(not(member empty k))) elts ;
     ()
 
   let test_choose () =
+    assert (choose empty = None);
+    let elts = generate_random_list 10 in
+    let s1 = insert_list empty elts in
+    let el = match (choose s1) with | None -> failwith "no list" | Some x -> x in
+    assert((member s1 (fst el)) && (not(member (snd el) (fst el)))) ;
     ()
 
   let test_fold () =
+    let f1 (e:elt) (s:string) : string =
+      (string_of_elt e)^s in
+    assert ((fold f1 "" empty)="");
+    let elt1 = C.gen_random() in
+    let elt2 = C.gen_random() in
+    let elt3 = C.gen_random() in
+    let s1 = insert_list empty (elt1::elt2::elt3::[]) in
+(*     Printf.printf "%s\n" (fold f1 "" s1) ;
+    Printf.printf "%s\n" ((string_of_elt elt1)^(string_of_elt elt2)^(string_of_elt elt3)); *)
+    (assert ((fold f1 "" s1) = (string_of_elt elt1)^(string_of_elt elt2)^(string_of_elt elt3)));
+
     ()
 
   let test_is_empty () =
+    assert(is_empty empty);
+    let elts = generate_random_list 100 in
+    let s1 = insert_list empty elts in
+    assert(not(is_empty s1));
     ()
 
   let test_singleton () =
+    let el = C.gen_random() in
+    let s1 = insert el empty in
+    assert(s1 = (singleton el));
     ()
 
   let run_tests () =
+    Printf.printf "Running tests\n\n";
     test_insert () ;
     test_remove () ;
     test_union () ;
@@ -302,7 +355,100 @@ struct
   (****************************************************************)
 
   (* add your test functions to run_tests *)
+
+  (* let insert_list (d: set) (lst: elt list) : set =
+    List.fold_left (fun r k -> insert k r) d lst
+
+  let rec generate_random_list (size: int) : elt list =
+    if size <= 0 then []
+    else (C.gen_random()) :: (generate_random_list (size - 1)) *)
+
+  let test_insert () =
+    (* let elts = generate_random_list 100 in
+    let s1 = insert_list empty elts in
+    List.iter (fun k -> assert(member s1 k)) elts ; *)
+    ()
+
+  let test_remove () =
+    (* let elts = generate_random_list 100 in
+    let s1 = insert_list empty elts in
+    let s2 = List.fold_right (fun k r -> remove k r) elts s1 in
+    List.iter (fun k -> assert(not (member s2 k))) elts ; *)
+    ()
+
+  let test_union () =
+    (* let elts = generate_random_list 50 in
+    let elts2 = generate_random_list 50 in
+    let s1 = insert_list empty elts in
+    let s2 = insert_list empty elts2 in
+    let s3 = union s1 s2 in
+    List.iter (fun k -> assert(member s3 k)) elts ;
+    List.iter (fun k -> assert(member s3 k)) elts2 ;
+    let s4 = union empty empty in
+    assert(is_empty s4); *)
+    ()
+
+  let test_intersect () =
+(*     let elts = generate_random_list 100 in
+    let elts2 = generate_random_list 100 in
+    let s1 = insert_list empty elts in
+    let s2 = insert_list empty elts2 in
+    let s3 = intersect s1 s2 in
+    List.iter (fun k ->
+      assert(
+        if (member s3 k) then
+          (member s2 k) && (member s1 k)
+        else
+          ((not (member s2 k)) || (not(member s1 k)) ))) elts ;
+    let s4 = intersect s1 empty in
+    assert (is_empty s4);
+    let s5 = intersect s1 s1 in
+    assert (not(is_empty s5));
+    assert (s5 = s1); *)
+    ()
+
+  let test_member () =
+    (* let elts = generate_random_list 100 in
+    let s1 = insert_list empty elts in
+    List.iter (fun k -> assert(member s1 k)) elts ;
+    List.iter (fun k -> assert(not(member empty k))) elts ; *)
+    ()
+
+  let test_choose () =
+    (* assert (choose empty = None);
+    let elts = generate_random_list 10 in
+    let s1 = insert_list empty elts in
+    let el = match (choose s1) with | None -> failwith "no list" | Some x -> x in
+    assert((member s1 (fst el)) && (not(member (snd el) (fst el)))) ; *)
+    ()
+
+(*   let test_fold () =
+    ()
+
+  let test_is_empty () =
+    assert(is_empty empty);
+    let elts = generate_random_list 100 in
+    let s1 = insert_list empty elts in
+    assert(not(is_empty s1));
+    ()
+
+  let test_singleton () =
+    let el = C.gen_random() in
+    let s1 = insert el empty in
+    assert(s1 = (singleton el));
+    () *)
+
   let run_tests () =
+    Printf.printf "Running tests\n\n";
+    test_insert () ;
+(*     test_remove () ;
+    test_union () ;
+    test_intersect () ;
+    test_member () ;
+    test_choose () ;
+    test_fold () ;
+    test_is_empty () ;
+    test_singleton () ; *)
     ()
 end
 
@@ -321,10 +467,10 @@ let _ = IntListSet.run_tests()
  *
  * Uncomment out the lines below when you are ready to test your
  * 2-3 dict set implementation *)
-(*
+
 module IntDictSet = DictSet(IntComparable)
 let _ = IntDictSet.run_tests()
-*)
+
 
 
 (******************************************************************)
@@ -336,4 +482,3 @@ module Make(C : COMPARABLE) : (SET with type elt = C.t) =
    * finished. *)
   (* ListSet (C) *)
   DictSet (C)
-
