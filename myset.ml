@@ -363,9 +363,21 @@ struct
     else (C.gen_random()) :: (generate_random_list (size - 1))
 
   let test_insert () =
+    (* Inserting into empty list *)
     let elts = generate_random_list 100 in
     let s1 = insert_list empty elts in
     List.iter (fun k -> assert(member s1 k)) elts ;
+
+    (* Inserting into existing list *)
+    let elts2 = generate_random_list 10 in
+    let s2 = insert_list s1 elts2 in
+    List.iter (fun k -> assert(member s2 k)) elts2 ;
+
+    (* Inserting the same element into list *)
+    let elt1 = C.gen_random () in
+    let s3 = insert elt1 empty in
+    let s4 = insert elt1 s3 in
+    assert(s3 = s4);
     ()
 
   let test_remove () =
