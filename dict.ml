@@ -380,8 +380,12 @@ struct
     | Right3
 
   (* How do we represent an empty dictionary with 2-3 trees? *)
+  (*an empty dictionary is a Leaf*)
   let empty : dict = Leaf
 
+
+  (*this is the helper function used in string_of_dict, it turns the dictionary
+  into a list*)
   let rec treeToList (d:dict):(key*value) list =
     match d with
       | Leaf -> []
@@ -397,17 +401,19 @@ struct
 
   (* TODO:
    * Implement fold. Read the specification in the DICT signature above. *)
+  (*the fold function for the dictionary, uses a helper function treeToList
+  it takes in a function, a initial
+  an initial value of 'a and a dictionary
+  it returns a 'a*)
   let rec fold (f: key -> value -> 'a -> 'a) (u: 'a) (d: dict) : 'a =
     List.fold_left (fun a (k, v) -> f k v a) u (treeToList d)
+
+
 
   (* TODO:
    * Implement these to-string functions *)
   let string_of_key = D.string_of_key
   let string_of_value = D.string_of_value
-  let string_of_dict (d: dict) : string =
-    let f = (fun y (k,v) -> y ^ "\n key: " ^ D.string_of_key k ^
-      "; value: (" ^ D.string_of_value v ^ ")") in
-    List.fold_left f "" (treeToList d)
 
   (* Debugging function. This will print out the tree in text format.
    * Use this function to see the actual structure of your 2-3 tree. *
@@ -435,12 +441,11 @@ struct
         ^ (string_of_tree middle) ^ ",(" ^ (string_of_key k2) ^ ","
         ^ (string_of_value v2) ^ ")," ^ (string_of_tree right) ^ ")"
 
+  (*uses the string_of_tree function*)
+  let string_of_dict (d: dict) : string =
+    string_of_tree d
 
 
-  let uptotree (k:kicked) : dict =
-    match k with
-    | Up(ll,(kk1,vv1),rr) -> Two(ll,(kk1,vv1),rr)
-    | Done xx -> xx
 
   (* Upward phase for w where its parent is a Two node whose (key,value) is x.
    * One of x's children is w, and the other child is x_other. This function
@@ -448,9 +453,6 @@ struct
    * result of performing the upward phase on w. *)
   let insert_upward_two (w: pair) (w_left: dict) (w_right: dict)
       (x: pair) (x_other: dict) : kicked =
-(*     Printf.printf "\ncalled up\n" ;
-    Printf.printf "\n%s-----\n" (string_of_tree (Two(w_left,w,w_right)));
-    Printf.printf "\n%s-----\n" (string_of_tree x_other); *)
     match D.compare (fst w) (fst x) with
     | Greater -> Done(Three(x_other, x, w_left, w, w_right))
     | Less -> (Done(Three(w_left, w, w_right, x, x_other)))
@@ -516,8 +518,6 @@ struct
    * corresponding functions insert_downward_two or insert_downward_three
    * with the appropriate arguments. *)
   let rec insert_downward (d: dict) (k: key) (v: value) : kicked =
-(*     Printf.printf "\ncall downward\n";
-    Printf.printf ""; *)
     match d with
       | Leaf -> (Up(Leaf, (k, v), Leaf)) ;
       | Two(Leaf,(k1,v1),Leaf) ->
@@ -600,23 +600,11 @@ struct
 
             | Eq -> Done(Three(left,n1x,middle,(k,v),right)))
           | Eq -> Done(Three(left,(k,v),middle,n2x,right)))
-          (* insert_downward_three (k, v) (fst n1, snd n1) (fst n2, snd n2) left middle right *)
+
 
   (* Downward phase on a Two node. (k,v) is the (key,value) we are inserting,
    * (k1,v1) is the (key,value) of the current Two node, and left and right
    * are the two subtrees of the current Two node. *)
-(*   and insert_downward_two ((k,v): pair) ((k1,v1): pair)
-      (left: dict) (right: dict) : kicked =
-    match D.compare (k) (k1) with
-    | Less ->
-        (match left with
-          | Leaf -> insert_upward_two (k,v) Leaf left (k1,v1) right
-          | _ -> insert_downward left k v )
-    | Greater ->
-        (match right with
-          | Leaf -> insert_upward_two (k,v) Leaf right (k1,v1) left
-          | _ -> insert_downward right k v )
-    | Eq -> insert_downward left k v *)
   and insert_downward_two ((k,v): pair) ((k1,v1): pair)
       (left: dict) (right: dict) : kicked =
     (* Printf.printf "\ndownward2\n"; *)
@@ -628,25 +616,6 @@ struct
   (* Downward phase on a Three node. (k,v) is the (key,value) we are inserting,
    * (k1,v1) and (k2,v2) are the two (key,value) pairs in our Three node, and
    * left, middle, and right are the three subtrees of our current Three node *)
-(*   and insert_downward_three ((k,v): pair) ((k1,v1): pair) ((k2,v2): pair)
-      (left: dict) (middle: dict) (right: dict) : kicked =
-    match D.compare (k) (k1) with
-    | Less ->
-      (match left with
-          | Leaf -> insert_upward_three (k,v) Leaf left (k1,v1) (k2,v2) middle right
-          | _ -> insert_downward left k v )
-    | Eq -> insert_downward right k v
-    | Greater ->
-      (match D.compare (k) (k2) with
-        | Less ->
-            (match middle with
-              | Leaf -> insert_upward_three (k,v) Leaf middle (k1,v1) (k2,v2) left right
-              | _ -> insert_downward middle k v )
-        | Eq -> insert_downward middle k v
-        | Greater ->
-            (match right with
-              | Leaf -> insert_upward_three (k,v) Leaf right (k1,v1) (k2,v2) left middle
-              | _ -> insert_downward right k v ) ) *)
 
   and insert_downward_three ((k,v): pair) ((k1,v1): pair) ((k2,v2): pair)
       (left: dict) (middle: dict) (right: dict) : kicked =
@@ -1007,48 +976,73 @@ struct
     assert(twotwotwo=Two(Two(Leaf,(k4,v1),Leaf),(k2,v1),leaf_two)) ;
 
 
-    (*make a new three tree with k4 and k1*)
+    (*make a new three node with k4 and k1*)
     let new_three = insert leaf_two k4 v1 in
+    (*insert an pair into the three node*)
     let twotwotwo2 = insert new_three k2 v1 in
     assert(twotwotwo2=twotwotwo) ;
 
-    (*insert same key*)
+    (*insert same key, different value, the value for this key should be updated*)
     let same2 = insert twotwotwo2 k2 v1 in
     let same22 = insert twotwotwo2 k2 v2 in
     assert(same2=twotwotwo2);
     assert(same22=Two(Two(Leaf,(k4,v1),Leaf),(k2,v2),leaf_two)) ;
 
+    (*insert to three node*)
     let twotwotwo3 = insert leaf_three k3 v1 in
     assert(twotwotwo3 = Two(Two(Leaf,(k2,v1),Leaf),(k1,v1),Two(Leaf,(k3,v1),Leaf))) ;
 
-(*     Printf.printf "%s\n" (string_of_tree twotwotwo3); *)
-    (* Printf.printf "\nstarted\n"; *)
+
+    (*insert into a tree like this:
+        Two node
+        /      \
+    Two nod   Two node   *)
     let threetwotwo = insert twotwotwo3 k4 v1 in
-    (* Printf.printf "\n%s" (string_of_tree threetwotwo);
-    Printf.printf "\n%s\n" (string_of_tree (Two(Three(Leaf,(k4,v1),Leaf,(k2,v1),Leaf),(k1,v1),Two(Leaf,(k3,v1),Leaf)))) ; *)
     assert(threetwotwo = Two(Three(Leaf,(k4,v1),Leaf,(k2,v1),Leaf),(k1,v1),Two(Leaf,(k3,v1),Leaf))) ;
 
+
+    (*creating new keys*)
     let k8 = D.gen_key_lt k4 () in
     let k6 = D.gen_key_gt k3 () in
     let k5 = D.gen_key_gt k6 () in
     let k7 = D.gen_key_gt k5 () in
     let two3left0 = insert d1 k5 v1 in
+
+    (*insert into Two node*)
     let two3left1 = insert two3left0 k7 v1 in
+
+    (*insert into Three node, result should be
+        Two node
+        /      \
+    Two node   Two node
+    *)
     let two3left = insert two3left1 k6 v1 in
     assert(two3left = Two(Two(Leaf,(k6,v1),Leaf),(k5,v1),Two(Leaf,(k7,v1),Leaf))) ;
+
+
+    (*making a tree like this
+        Two node
+        /      \
+    Two node   Two node
+    *)
     let all0 = insert d1 k3 v1 in
     let all1 = insert all0 k2 v1 in
     let all2 = insert all1 k5 v1 in
     assert(all2 = Two(Two(Leaf,(k2,v1),Leaf),(k3,v1),Two(Leaf,(k5,v1),Leaf))) ;
+
+    (*insert same key, different value, the value for this key should be updated*)
     let all22 = insert all2 k5 v2 in
     assert(all22=Two(Two(Leaf,(k2,v1),Leaf),(k3,v1),Two(Leaf,(k5,v2),Leaf))) ;
+
+    (*inserting a lot of key value pairs into the tree and check whether it is balanced*)
     let all3 = insert all2 k4 v1 in
     let all4 = insert all3 k7 v1 in
     let all5 = insert all4 k1 v1 in
     let all6 = insert all5 k6 v1 in
     let all7 = insert all6 k8 v1 in
-    (* Printf.printf "%s" (string_of_tree all5); *)
     let k9 = D.gen_key_gt k7 () in
+
+    (*inserting same key value pair into this tree, the tree should be unchanged*)
     let all8 = insert all7 k9 v1 in
     let all9 = insert all8 k9 v1 in
     assert(balanced all5);
@@ -1093,8 +1087,6 @@ struct
   let test_remove_reverse_order () =
     let pairs1 = generate_pair_list 26 in
     let d1 = insert_list_reversed empty pairs1 in
-(*     Printf.printf "\n%s\n" (string_of_tree d1);
-    Printf.printf "==================="; *)
     List.iter
       (fun (k,v) ->
         let r = remove d1 k in
@@ -1104,9 +1096,6 @@ struct
             else assert(lookup r k2 = Some v2)
           ) pairs1 in
         assert(balanced r)
-(*         Printf.printf "\n%s\n" (string_of_bool (balanced r));
-        Printf.printf "\n%s\n" (string_of_key k);
-        Printf.printf "\n%s\n" (string_of_tree r); *)
       ) pairs1 ;
     ()
 
@@ -1129,36 +1118,57 @@ struct
     let leaf_two = insert d1 k1 v1 in
     assert(choose leaf_two=Some(k1,v1,Leaf)) ;
 
-    (*insert less than key into two tree*)
+    (*insert a key that is less than the previous key into two node*)
     let k2 = D.gen_key_lt k1 () in
     let leaf_three = insert leaf_two k2 v1 in
-    (* Printf.printf "%s" (string_of_tree leaf_three); *)
     assert(choose leaf_three=Some(k2,v1,leaf_two)) ;
 
-    (*insert greater than key into two tree*)
+    (*insert a key that is greater than the previous key into two node*)
     let k3 = D.gen_key_gt k1 () in
     let leaf_three2 = insert leaf_two k3 v1 in
     assert(choose leaf_three2=Some(k1,v1,Two(Leaf,(k3,v1),Leaf))) ;
 
-    (* insert less than key into three tree *)
+    (* insert a key that is less than the previous key into three node *)
     let k4 = D.gen_key_lt k2 () in
     let twotwotwo = insert leaf_three k4 v1 in
     assert(choose twotwotwo=Some(k2,v1,Three(Leaf,(k4,v1),Leaf,(k1,v1),Leaf))) ;
 
 
-    (*make a new three tree with k4 and k1*)
+    (*make a new three node with k4 and k1*)
     let new_three = insert leaf_two k4 v1 in
+
+    (*insert into the three node*)
     let twotwotwo2 = insert new_three k2 v1 in
+
+    (*choose from a tree like this:
+        Two node
+        /      \
+    Two node   Two node
+    *)
     assert(choose twotwotwo2=Some(k2,v1,new_three)) ;
 
+
     let twotwotwo3 = insert leaf_three k3 v1 in
+
+    (*choose from a tree like this:
+        Two node
+        /      \
+    Two node   Two node
+    *)
     assert(choose twotwotwo3 = Some(k1,v1,Three(Leaf,(k2,v1),Leaf,(k3,v1),Leaf))) ;
 
-(*     Printf.printf "%s\n" (string_of_tree twotwotwo3); *)
-    (* Printf.printf "\nstarted\n"; *)
+    (*insert same key, different value, the value should be updated*)
+    let v2 = D.gen_value() in
+    let same1 = insert twotwotwo3 k1 v2 in
+    (*choose again, the value is unpdated*)
+    assert(choose same1 = Some(k1,v2,Three(Leaf,(k2,v1),Leaf,(k3,v1),Leaf))) ;
+
     let threetwotwo = insert twotwotwo3 k4 v1 in
-    (* Printf.printf "\n%s" (string_of_tree threetwotwo);
-    Printf.printf "\n%s\n" (string_of_tree (Two(Three(Leaf,(k4,v1),Leaf,(k2,v1),Leaf),(k1,v1),Two(Leaf,(k3,v1),Leaf)))) ; *)
+    (*choose from a tree like this:
+        Two node
+        /      \
+    Three node   Two node
+    *)
     assert(choose threetwotwo = Some(k1,v1,Two(Two(Leaf,(k4,v1),Leaf),(k2,v1),Two(Leaf,(k3,v1),Leaf)))) ;
     ()
 
