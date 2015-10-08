@@ -267,6 +267,8 @@ struct
     let pairs1 = generate_pair_list 26 in
     let d1 = insert_list empty pairs1 in
     List.iter (fun (k,v) -> assert(lookup d1 k = Some v)) pairs1 ;
+
+    (* Lookup empty *)
     List.iter (fun (k,v) -> assert(lookup empty k = None)) pairs1 ;
     ()
 
@@ -824,32 +826,22 @@ struct
       | Two(left,v,right) ->
         let left_height = getHeight left in
         let right_height = getHeight right in
-        if (left_height = -1) then
-          -1
-        else if (right_height = -1) then
-          -1
+        if (left_height = -1) then -1
+        else if (right_height = -1) then -1
         else
-          if (not (left_height = right_height)) then
-            -1
-          else
-            left_height + 1
+          if (not (left_height = right_height)) then -1
+          else left_height + 1
       | Three(left,v1,middle,v2,right) ->
         let left_height = getHeight left in
         let middle_height = getHeight middle in
         let right_height = getHeight right in
-        if (left_height = -1) then
-          -1
-        else if (middle_height = -1) then
-          -1
-        else if (right_height = -1) then
-          -1
+        if (left_height = -1) then -1
+        else if (middle_height = -1) then -1
+        else if (right_height = -1) then -1
         else (
-          if (not (left_height = right_height)) then
-            -1
-          else if (not (left_height = middle_height)) then
-            -1
-          else
-            left_height + 1)
+          if (not (left_height = right_height)) then -1
+          else if (not (left_height = middle_height)) then -1
+          else left_height + 1)
 
   (* TODO:
    * Write a function that when given a 2-3 tree (represented by our
@@ -992,14 +984,12 @@ struct
     let twotwotwo3 = insert leaf_three k3 v1 in
     assert(twotwotwo3 = Two(Two(Leaf,(k2,v1),Leaf),(k1,v1),Two(Leaf,(k3,v1),Leaf))) ;
 
-
     (*insert into a tree like this:
         Two node
         /      \
     Two nod   Two node   *)
     let threetwotwo = insert twotwotwo3 k4 v1 in
     assert(threetwotwo = Two(Three(Leaf,(k4,v1),Leaf,(k2,v1),Leaf),(k1,v1),Two(Leaf,(k3,v1),Leaf))) ;
-
 
     (*creating new keys*)
     let k8 = D.gen_key_lt k4 () in
@@ -1018,7 +1008,6 @@ struct
     *)
     let two3left = insert two3left1 k6 v1 in
     assert(two3left = Two(Two(Leaf,(k6,v1),Leaf),(k5,v1),Two(Leaf,(k7,v1),Leaf))) ;
-
 
     (*making a tree like this
         Two node
@@ -1109,9 +1098,11 @@ struct
     ()
 
   let test_choose () =
+    (* Choose from empty *)
     let empty = Leaf in
     assert((choose empty)=None);
 
+    (* Choose *)
     let d1 = Leaf in
     let k1 = D.gen_key() in
     let v1 = D.gen_value() in
@@ -1133,7 +1124,6 @@ struct
     let twotwotwo = insert leaf_three k4 v1 in
     assert(choose twotwotwo=Some(k2,v1,Three(Leaf,(k4,v1),Leaf,(k1,v1),Leaf))) ;
 
-
     (*make a new three node with k4 and k1*)
     let new_three = insert leaf_two k4 v1 in
 
@@ -1146,7 +1136,6 @@ struct
     Two node   Two node
     *)
     assert(choose twotwotwo2=Some(k2,v1,new_three)) ;
-
 
     let twotwotwo3 = insert leaf_three k3 v1 in
 
@@ -1171,7 +1160,6 @@ struct
     *)
     assert(choose threetwotwo = Some(k1,v1,Two(Two(Leaf,(k4,v1),Leaf),(k2,v1),Two(Leaf,(k3,v1),Leaf)))) ;
     ()
-
 
 
   let run_tests () =
