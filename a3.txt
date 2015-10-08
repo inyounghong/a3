@@ -2,17 +2,29 @@ Summarize your solution
 -----------------------
 
 * What was your approach to solving the assignment?
+We followed the instructions. We finish each and test them rigoriously before
+moving on to the next part
+
 * Are there any known bugs in your solution?
+There are no bugs in our solution
 
 Feedback on the assignment
 --------------------------
 
 * What was fun about the assignment?
+Using Moogle
+
 * What did you find especially hard?
+Implementing the insert function
+
 * How could the assignment be made more valuable?
+This assignment is already great
 
 Karma
 -----
 
 * What, if any, karma functionality did you implement?
+We did not implement any karma function
+
+
 * How can the grader access that functionality and test it?
