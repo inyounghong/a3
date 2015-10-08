@@ -818,6 +818,10 @@ struct
     | Two(l,n,r) -> Some ((fst n),(snd n),(remove d (fst n)))
     | Three(l,n1,m,n2,r) -> Some ((fst n1),(snd n1),(remove d (fst n1)))
 
+
+  (*the getHeight function
+  takes in an dictionary, returns an int
+  if tree is balanced, return the height, else return -1*)
   let rec getHeight (d:dict) =
     match d with
       | Leaf -> 0
@@ -861,6 +865,8 @@ struct
    * ANSWER:
    *    _______________
    *)
+  (*the balanced function takes in an dictionary and returns a bool
+  uses getHeight as helper*)
   let rec balanced (d: dict) : bool =
     if (getHeight d = -1) then
       false
