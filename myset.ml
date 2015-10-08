@@ -381,6 +381,24 @@ struct
     ()
 
   let test_remove () =
+    let elts1 = generate_random_list 26 in
+    let s1 = insert_list empty elts1 in
+    List.iter
+      (fun k ->
+        let r = remove k s1 in
+        List.iter
+          (fun k2 ->
+            if k = k2 then assert(not (member r k2))
+            else assert(member r k2)
+          ) elts1
+      ) elts1 ;
+
+
+    let elt2 = C.gen_random() in
+    (assert ((remove elt2 empty) = empty)) ;
+    let elt3 = C.gen_gt elt2 () in
+    let s2 = insert elt2 empty in
+    (assert ((remove elt3 s2)=s2));
     (* let elts = generate_random_list 100 in
     let s1 = insert_list empty elts in
     let s2 = List.fold_right (fun k r -> remove k r) elts s1 in
@@ -388,7 +406,7 @@ struct
     ()
 
   let test_union () =
-    (* let elts = generate_random_list 50 in
+    let elts = generate_random_list 50 in
     let elts2 = generate_random_list 50 in
     let s1 = insert_list empty elts in
     let s2 = insert_list empty elts2 in
@@ -396,12 +414,23 @@ struct
     List.iter (fun k -> assert(member s3 k)) elts ;
     List.iter (fun k -> assert(member s3 k)) elts2 ;
     let s4 = union empty empty in
-    assert(is_empty s4); *)
+    assert(is_empty s4);
+    let elt1 = C.gen_random() in
+    let elt2 = C.gen_gt elt1 () in
+    let elt3 = C.gen_gt elt2 () in
+    let elt4 = C.gen_gt elt3 () in
+    let ss1 = insert_list empty (elt1::elt2::elt3::[]) in
+    let ss2 = insert_list empty (elt2::elt3::elt4::[]) in
+    let ss3 = union ss1 ss2 in
+    assert(member ss3 elt1);
+    assert(member ss3 elt2);
+    assert(member ss3 elt3);
+    assert(member ss3 elt4);
     ()
 
   let test_intersect () =
-(*     let elts = generate_random_list 100 in
-    let elts2 = generate_random_list 100 in
+    let elts = generate_random_list 10 in
+    let elts2 = generate_random_list 10 in
     let s1 = insert_list empty elts in
     let s2 = insert_list empty elts2 in
     let s3 = intersect s1 s2 in
@@ -410,30 +439,52 @@ struct
         if (member s3 k) then
           (member s2 k) && (member s1 k)
         else
-          ((not (member s2 k)) || (not(member s1 k)) ))) elts ;
+          not (member s2 k))) elts ;
+    List.iter (fun k ->
+      assert(
+        if (member s3 k) then
+          (member s2 k) && (member s1 k)
+        else
+          not(member s1 k))) elts2 ;
     let s4 = intersect s1 empty in
     assert (is_empty s4);
     let s5 = intersect s1 s1 in
     assert (not(is_empty s5));
-    assert (s5 = s1); *)
+(*     Printf.printf "%s\n" (string_of_set s5);
+    Printf.printf "%s\n" (string_of_set s1); *)
+    List.iter (fun k ->
+      assert((member s1 k)&&(member s5 k))) elts ;
+(*     assert ((string_of_set s5) = (string_of_set s1)); *)
     ()
 
   let test_member () =
-    (* let elts = generate_random_list 100 in
+    let elts = generate_random_list 100 in
     let s1 = insert_list empty elts in
     List.iter (fun k -> assert(member s1 k)) elts ;
-    List.iter (fun k -> assert(not(member empty k))) elts ; *)
+    List.iter (fun k -> assert(not(member empty k))) elts ;
     ()
 
   let test_choose () =
-    (* assert (choose empty = None);
+    assert (choose empty = None);
     let elts = generate_random_list 10 in
     let s1 = insert_list empty elts in
     let el = match (choose s1) with | None -> failwith "no list" | Some x -> x in
-    assert((member s1 (fst el)) && (not(member (snd el) (fst el)))) ; *)
+    assert((member s1 (fst el)) && (not(member (snd el) (fst el)))) ;
     ()
 
-(*   let test_fold () =
+  let test_fold () =
+    let f1 (e:elt) (s:string) : string =
+      (string_of_elt e)^s in
+(*     let f2 (s:string) (e:elt) : string =
+      (string_of_elt e)^s in *)
+    assert ((fold f1 "" empty)="");
+    let elt1 = C.gen_random() in
+    let elt2 = C.gen_gt elt1 () in
+    let elt3 = C.gen_gt elt2 () in
+    let s1 = insert_list empty (elt1::elt2::elt3::[]) in
+(*     Printf.printf "%s\n" (fold f1 "" s1);
+    Printf.printf "%s\n" ((string_of_elt elt3)^(string_of_elt elt1)^(string_of_elt elt2)); *)
+    (assert ((fold f1 "" s1) = (string_of_elt elt3)^(string_of_elt elt1)^(string_of_elt elt2)));
     ()
 
   let test_is_empty () =
@@ -447,19 +498,19 @@ struct
     let el = C.gen_random() in
     let s1 = insert el empty in
     assert(s1 = (singleton el));
-    () *)
+    ()
 
   let run_tests () =
     Printf.printf "Running tests\n\n";
     test_insert () ;
-(*     test_remove () ;
+    test_remove () ;
     test_union () ;
     test_intersect () ;
     test_member () ;
     test_choose () ;
     test_fold () ;
     test_is_empty () ;
-    test_singleton () ; *)
+    test_singleton () ;
     ()
 end
 

@@ -232,6 +232,7 @@ struct
     ()
 
   let test_remove () =
+
     let pairs1 = generate_pair_list 26 in
     let d1 = insert_list empty pairs1 in
     List.iter
