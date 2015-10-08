@@ -235,15 +235,14 @@ struct
   let test_fold () =
     let f1 (e:elt) (s:string) : string =
       (string_of_elt e)^s in
+    let f2 (s:string) (e:elt) : string =
+      (string_of_elt e)^s in
     assert ((fold f1 "" empty)="");
     let elt1 = C.gen_random() in
     let elt2 = C.gen_random() in
     let elt3 = C.gen_random() in
     let s1 = insert_list empty (elt1::elt2::elt3::[]) in
-(*     Printf.printf "%s\n" (fold f1 "" s1) ;
-    Printf.printf "%s\n" ((string_of_elt elt1)^(string_of_elt elt2)^(string_of_elt elt3)); *)
-    (assert ((fold f1 "" s1) = (string_of_elt elt1)^(string_of_elt elt2)^(string_of_elt elt3)));
-
+    (assert ((fold f1 "" s1) = (List.fold_left f2 "" s1)));
     ()
 
   let test_is_empty () =
@@ -293,7 +292,7 @@ struct
     let gen_key_gt x () = C.gen_gt x ()
     let gen_key_lt x () = C.gen_lt x ()
     let gen_key_random () = C.gen_random ()
-    let gen_key_between x y () = None
+    let gen_key_between x y () = C.gen_between x y ()
     let gen_value () = gen_key ()
     let gen_pair () = let p = gen_key() in (p,p)
   end)
@@ -356,17 +355,17 @@ struct
 
   (* add your test functions to run_tests *)
 
-  (* let insert_list (d: set) (lst: elt list) : set =
+  let insert_list (d: set) (lst: elt list) : set =
     List.fold_left (fun r k -> insert k r) d lst
 
   let rec generate_random_list (size: int) : elt list =
     if size <= 0 then []
-    else (C.gen_random()) :: (generate_random_list (size - 1)) *)
+    else (C.gen_random()) :: (generate_random_list (size - 1))
 
   let test_insert () =
-    (* let elts = generate_random_list 100 in
+    let elts = generate_random_list 100 in
     let s1 = insert_list empty elts in
-    List.iter (fun k -> assert(member s1 k)) elts ; *)
+    List.iter (fun k -> assert(member s1 k)) elts ;
     ()
 
   let test_remove () =
