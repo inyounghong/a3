@@ -578,23 +578,29 @@ struct
       | Three(left,n1x,middle,n2x,right) ->
           (match D.compare k (fst n1x) with
           | Less ->
-            let result1 = insert_downward_three (k, v) n1x n2x left middle right in
+            let result1 =
+              insert_downward_three (k, v) n1x n2x left middle right in
             (match result1 with
-            | Up(ll,(kk1,vv1),rr) -> insert_upward_three (kk1,vv1) ll rr n1x n2x middle right
+            | Up(ll,(kk1,vv1),rr) ->
+              insert_upward_three (kk1,vv1) ll rr n1x n2x middle right
             | Done xx -> Done(Three(xx,n1x,middle,n2x,right)))
 
           | Greater ->
             (match D.compare k (fst n2x) with
             | Less ->
-              let result1 = insert_downward_three (k, v) n1x n2x left middle right in
+              let result1 =
+                insert_downward_three (k, v) n1x n2x left middle right in
               (match result1 with
-              | Up(ll,(kk1,vv1),rr) -> insert_upward_three (kk1,vv1) ll rr n1x n2x left right
+              | Up(ll,(kk1,vv1),rr) ->
+                insert_upward_three (kk1,vv1) ll rr n1x n2x left right
               | Done xx -> Done(Three(left,n1x,xx,n2x,right)))
 
             | Greater ->
-              let result1 = insert_downward_three (k, v) n1x n2x left middle right in
+              let result1 =
+                insert_downward_three (k, v) n1x n2x left middle right in
               (match result1 with
-              | Up(ll,(kk1,vv1),rr) -> insert_upward_three (kk1,vv1) ll rr n1x n2x left middle
+              | Up(ll,(kk1,vv1),rr) ->
+                insert_upward_three (kk1,vv1) ll rr n1x n2x left middle
               | Done xx -> Done(Three(left,n1x,middle,n2x,xx)))
 
             | Eq -> Done(Three(left,n1x,middle,(k,v),right)))
@@ -645,8 +651,10 @@ struct
     match dir,n,left,right with
       | Left2,x,l,Two(m,y,r) -> Hole(rem,Three(l,x,m,y,r))
       | Right2,y,Two(l,x,m),r -> Hole(rem,Three(l,x,m,y,r))
-      | Left2,x,a,Three(b,y,c,z,d) -> Absorbed(rem,Two(Two(a,x,b),y,Two(c,z,d)))
-      | Right2,z,Three(a,x,b,y,c),d -> Absorbed(rem,Two(Two(a,x,b),y,Two(c,z,d)))
+      | Left2,x,a,Three(b,y,c,z,d) ->
+        Absorbed(rem,Two(Two(a,x,b),y,Two(c,z,d)))
+      | Right2,z,Three(a,x,b,y,c),d ->
+        Absorbed(rem,Two(Two(a,x,b),y,Two(c,z,d)))
       | Left2,_,_,_ | Right2,_,_,_ -> Absorbed(rem,Two(Leaf,n,Leaf))
 
   (* Upward phase for removal where the parent of the hole is a Three node.
@@ -661,10 +669,14 @@ struct
       | Mid3,y,z,Two(a,x,b),c,d -> Absorbed(rem,Two(Three(a,x,b,y,c),z,d))
       | Mid3,x,y,a,b,Two(c,z,d) -> Absorbed(rem,Two(a,x,Three(b,y,c,z,d)))
       | Right3,x,z,a,Two(b,y,c),d -> Absorbed(rem,Two(a,x,Three(b,y,c,z,d)))
-      | Left3,w,z,a,Three(b,x,c,y,d),e -> Absorbed(rem,Three(Two(a,w,b),x,Two(c,y,d),z,e))
-      | Mid3,y,z,Three(a,w,b,x,c),d,e -> Absorbed(rem,Three(Two(a,w,b),x,Two(c,y,d),z,e))
-      | Mid3,w,x,a,b,Three(c,y,d,z,e) -> Absorbed(rem,Three(a,w,Two(b,x,c),y,Two(d,z,e)))
-      | Right3,w,z,a,Three(b,x,c,y,d),e -> Absorbed(rem,Three(a,w,Two(b,x,c),y,Two(d,z,e)))
+      | Left3,w,z,a,Three(b,x,c,y,d),e ->
+        Absorbed(rem,Three(Two(a,w,b),x,Two(c,y,d),z,e))
+      | Mid3,y,z,Three(a,w,b,x,c),d,e ->
+        Absorbed(rem,Three(Two(a,w,b),x,Two(c,y,d),z,e))
+      | Mid3,w,x,a,b,Three(c,y,d,z,e) ->
+        Absorbed(rem,Three(a,w,Two(b,x,c),y,Two(d,z,e)))
+      | Right3,w,z,a,Three(b,x,c,y,d),e ->
+        Absorbed(rem,Three(a,w,Two(b,x,c),y,Two(d,z,e)))
       | Left3,_,_,_,_,_ | Mid3,_,_,_,_,_ | Right3,_,_,_,_,_ ->
         Absorbed(rem,Three(Leaf,n1,Leaf,n2,Leaf))
 
@@ -974,7 +986,8 @@ struct
     let twotwotwo2 = insert new_three k2 v1 in
     assert(twotwotwo2=twotwotwo) ;
 
-    (*insert same key, different value, the value for this key should be updated*)
+    (*insert same key, different value, the value for this key
+    should be updated*)
     let same2 = insert twotwotwo2 k2 v1 in
     let same22 = insert twotwotwo2 k2 v2 in
     assert(same2=twotwotwo2);
@@ -982,14 +995,16 @@ struct
 
     (*insert to three node*)
     let twotwotwo3 = insert leaf_three k3 v1 in
-    assert(twotwotwo3 = Two(Two(Leaf,(k2,v1),Leaf),(k1,v1),Two(Leaf,(k3,v1),Leaf))) ;
+    assert(twotwotwo3 = Two(Two(Leaf,(k2,v1),Leaf),(k1,v1),
+      Two(Leaf,(k3,v1),Leaf))) ;
 
     (*insert into a tree like this:
         Two node
         /      \
     Two nod   Two node   *)
     let threetwotwo = insert twotwotwo3 k4 v1 in
-    assert(threetwotwo = Two(Three(Leaf,(k4,v1),Leaf,(k2,v1),Leaf),(k1,v1),Two(Leaf,(k3,v1),Leaf))) ;
+    assert(threetwotwo = Two(Three(Leaf,(k4,v1),Leaf,(k2,v1),Leaf),
+      (k1,v1),Two(Leaf,(k3,v1),Leaf))) ;
 
     (*creating new keys*)
     let k8 = D.gen_key_lt k4 () in
@@ -1007,7 +1022,7 @@ struct
     Two node   Two node
     *)
     let two3left = insert two3left1 k6 v1 in
-    assert(two3left = Two(Two(Leaf,(k6,v1),Leaf),(k5,v1),Two(Leaf,(k7,v1),Leaf))) ;
+    assert(two3left=Two(Two(Leaf,(k6,v1),Leaf),(k5,v1),Two(Leaf,(k7,v1),Leaf)));
 
     (*making a tree like this
         Two node
@@ -1019,11 +1034,13 @@ struct
     let all2 = insert all1 k5 v1 in
     assert(all2 = Two(Two(Leaf,(k2,v1),Leaf),(k3,v1),Two(Leaf,(k5,v1),Leaf))) ;
 
-    (*insert same key, different value, the value for this key should be updated*)
+    (*insert same key, different value, the value for this key should be
+    updated*)
     let all22 = insert all2 k5 v2 in
     assert(all22=Two(Two(Leaf,(k2,v1),Leaf),(k3,v1),Two(Leaf,(k5,v2),Leaf))) ;
 
-    (*inserting a lot of key value pairs into the tree and check whether it is balanced*)
+    (*inserting a lot of key value pairs into the tree and check whether
+    it is balanced*)
     let all3 = insert all2 k4 v1 in
     let all4 = insert all3 k7 v1 in
     let all5 = insert all4 k1 v1 in
@@ -1031,7 +1048,8 @@ struct
     let all7 = insert all6 k8 v1 in
     let k9 = D.gen_key_gt k7 () in
 
-    (*inserting same key value pair into this tree, the tree should be unchanged*)
+    (*inserting same key value pair into this tree, the tree should be
+    unchanged*)
     let all8 = insert all7 k9 v1 in
     let all9 = insert all8 k9 v1 in
     assert(balanced all5);
@@ -1122,7 +1140,7 @@ struct
     (* insert a key that is less than the previous key into three node *)
     let k4 = D.gen_key_lt k2 () in
     let twotwotwo = insert leaf_three k4 v1 in
-    assert(choose twotwotwo=Some(k2,v1,Three(Leaf,(k4,v1),Leaf,(k1,v1),Leaf))) ;
+    assert(choose twotwotwo=Some(k2,v1,Three(Leaf,(k4,v1),Leaf,(k1,v1),Leaf)));
 
     (*make a new three node with k4 and k1*)
     let new_three = insert leaf_two k4 v1 in
@@ -1144,7 +1162,7 @@ struct
         /      \
     Two node   Two node
     *)
-    assert(choose twotwotwo3 = Some(k1,v1,Three(Leaf,(k2,v1),Leaf,(k3,v1),Leaf))) ;
+    assert(choose twotwotwo3=Some(k1,v1,Three(Leaf,(k2,v1),Leaf,(k3,v1),Leaf)));
 
     (*insert same key, different value, the value should be updated*)
     let v2 = D.gen_value() in
@@ -1158,9 +1176,29 @@ struct
         /      \
     Three node   Two node
     *)
-    assert(choose threetwotwo = Some(k1,v1,Two(Two(Leaf,(k4,v1),Leaf),(k2,v1),Two(Leaf,(k3,v1),Leaf)))) ;
+    assert(choose threetwotwo = Some(k1,v1,Two(Two(Leaf,(k4,v1),Leaf),(k2,v1),
+                                      Two(Leaf,(k3,v1),Leaf)))) ;
     ()
 
+  let test_fold () =
+
+    let f1 (k:key) (v:value) (s:string) : string =
+      (string_of_key k)^(string_of_value v)^s in
+    (*fold empty*)
+    (assert ((fold f1 "" empty)="")) ;
+
+    (* Fold list *)
+    let pair1 = D.gen_pair() in
+    let pair2 = ((D.gen_key_lt (fst pair1) ()),D.gen_value()) in
+    let s1 = insert empty (fst pair1) (snd pair1) in
+    let s2 = insert s1 (fst pair2) (snd pair2) in
+    let str1 = (string_of_key (fst pair1))^(string_of_value (snd pair1)) in
+    let str2 = (string_of_key (fst pair1))^(string_of_value (snd pair1))^
+                (string_of_key (fst pair2))^(string_of_value (snd pair2)) in
+    (assert ((fold f1 "" s1)=str1)) ;
+    (assert ((fold f1 "" s2)=str2)) ;
+
+    ()
 
   let run_tests () =
     test_balance() ;
@@ -1171,6 +1209,7 @@ struct
     test_remove_reverse_order() ;
     test_remove_random_order() ;
     test_choose();
+    test_fold();
     ()
 
 end
