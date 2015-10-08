@@ -1,0 +1,589 @@
+commit 9e5fff6f201b7d6124977e4e9613a3b01f0978ab
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Thu Oct 8 18:14:57 2015 -0400
+
+    small fix
+
+ dict.ml | 83 ++++++++++++++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 61 insertions(+), 22 deletions(-)
+
+commit d28f975800ad79146af42548ece64ca1ce00a5c0
+Author: inyounghong <ih235@cornell.edu>
+Date:   Thu Oct 8 18:07:55 2015 -0400
+
+    Fixed spacing on myset
+
+ myset.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 04e8ebe766d3a14e1284441a1fa799c92e162dd8
+Author: inyounghong <ih235@cornell.edu>
+Date:   Thu Oct 8 17:42:53 2015 -0400
+
+    commented on dict
+
+ dict.ml | 40 ++++++++++++++--------------------------
+ 1 file changed, 14 insertions(+), 26 deletions(-)
+
+commit d614a562e5fe34e6a5e0462f4563a2c112e4e771
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Thu Oct 8 17:40:40 2015 -0400
+
+    condense insert function
+
+ dict.ml | 30 +++++-------------------------
+ 1 file changed, 5 insertions(+), 25 deletions(-)
+
+commit 9bb957b803a86445f8e44fe2677138f5b205f3c1
+Author: inyounghong <ih235@cornell.edu>
+Date:   Thu Oct 8 17:22:47 2015 -0400
+
+    Cleaning up dict and myset
+
+ dict.ml  | 56 +++++++++++++++++++++++++++++++++++---------------------
+ myset.ml |  5 +----
+ 2 files changed, 36 insertions(+), 25 deletions(-)
+
+commit 3d019d1ce9e8df5033bc04b3b91f0902a2cca81f
+Author: inyounghong <ih235@cornell.edu>
+Date:   Thu Oct 8 17:02:26 2015 -0400
+
+    Fixed crawl
+
+ crawl.ml | 40 +++++++++++++++++++---------------------
+ 1 file changed, 19 insertions(+), 21 deletions(-)
+
+commit 1884349f43021deaa0bdbd3d27faf6cce0767fdb
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Thu Oct 8 17:06:07 2015 -0400
+
+    a3.txt
+
+ a3.txt | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+commit 8ede3a4ec07fa473b5f4747eda752f1a81bae14c
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Thu Oct 8 17:00:17 2015 -0400
+
+    dictionary
+
+ dict.ml | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 08a5a0998c4a7ce896a6b5e4aa20c560b296126f
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Thu Oct 8 16:59:37 2015 -0400
+
+    dictionary
+
+ dict.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 8fafa9a88012bb758a0873791437310b4cd370c0
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Thu Oct 8 16:51:44 2015 -0400
+
+    dictionary
+
+ dict.ml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit cd7d720986507122890721b8dea8a437d5cb4bd6
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Thu Oct 8 16:49:30 2015 -0400
+
+    dictionary
+
+ dict.ml | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+commit 795ae38ff91ef8270a3c5d3a3f598e626d90c1dd
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Thu Oct 8 16:44:42 2015 -0400
+
+    dictionary
+
+ dict.ml | 142 ++++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 76 insertions(+), 66 deletions(-)
+
+commit 5133b35e1fde0cb08a95c07daaee89480c3cea43
+Author: inyounghong <ih235@cornell.edu>
+Date:   Thu Oct 8 16:39:12 2015 -0400
+
+    Finished myset tests for second set
+
+ myset.ml | 87 ++++++++++++++++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 65 insertions(+), 22 deletions(-)
+
+commit 36b7217db625a30f6a4d7097f9847f6c1e2a541d
+Author: inyounghong <ih235@cornell.edu>
+Date:   Thu Oct 8 16:19:07 2015 -0400
+
+    Added details and corner cases to myset.ml tests
+
+ myset.ml | 78 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 74 insertions(+), 4 deletions(-)
+
+commit d257ccae4a7dc395825a591b06efb75e5dad731d
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Thu Oct 8 15:56:11 2015 -0400
+
+    tests
+
+ dict.ml  |  1 +
+ myset.ml | 79 ++++++++++++++++++++++++++++++++++++++++++++++++++++------------
+ 2 files changed, 66 insertions(+), 14 deletions(-)
+
+commit b0ebd9582911f8bdf9bfdd4fd3c0ff18db1e469f
+Author: inyounghong <ih235@cornell.edu>
+Date:   Thu Oct 8 15:05:47 2015 -0400
+
+    updated insert test
+
+ myset.ml | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+commit b4ce0ec2c998a9767f1e65ed691e937d832e48e6
+Author: inyounghong <ih235@cornell.edu>
+Date:   Thu Oct 8 14:56:45 2015 -0400
+
+    Update set list fold test
+
+ myset.ml | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
+
+commit f4bda2c0cae51017f876d8c0804136e4ca6554df
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Thu Oct 8 14:43:34 2015 -0400
+
+    tests
+
+ dict.ml  |  13 ++++++
+ myset.ml | 153 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 162 insertions(+), 4 deletions(-)
+
+commit 731f6cd2281a1b048d719c0156d534c02f707165
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Wed Oct 7 17:53:45 2015 -0400
+
+    test cases
+
+ dict.ml | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+commit 7900548f72bd35a73be9b36f9956285aae59d709
+Author: inyounghong <ih235@cornell.edu>
+Date:   Wed Oct 7 17:23:25 2015 -0400
+
+    Cleaned up dict.ml
+
+ dict.ml | 7 -------
+ 1 file changed, 7 deletions(-)
+
+commit d242e48ce2a027ccab477d150bffcc30e9827af4
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Wed Oct 7 17:01:23 2015 -0400
+
+    graph.ml
+
+ graph.ml | 30 +++---------------------------
+ 1 file changed, 3 insertions(+), 27 deletions(-)
+
+commit 53e4bf1ea11412bad88dea6409138f3923895ab5
+Author: inyounghong <ih235@cornell.edu>
+Date:   Wed Oct 7 16:51:01 2015 -0400
+
+    Fixed equal insert replace value
+
+ dict.ml  | 96 +++++++++++++++++++++++-----------------------------------------
+ graph.ml | 28 +++++++++++++++++--
+ myset.ml |  4 +--
+ 3 files changed, 62 insertions(+), 66 deletions(-)
+
+commit 205ca57d641a57cfebb991813bb66107c2526801
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Wed Oct 7 13:48:20 2015 -0400
+
+    dictionary
+
+ dict.ml | 113 +++++++++++++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 87 insertions(+), 26 deletions(-)
+
+commit fd6f9b40916c0bf067813ad5a039d3a4ca308c41
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Wed Oct 7 12:10:28 2015 -0400
+
+    insert
+
+ dict.ml | 243 +++++++++++++++++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 212 insertions(+), 31 deletions(-)
+
+commit 7b3722315beeace6c1a68dea857845b8e8fc3b66
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Tue Oct 6 15:56:57 2015 -0400
+
+    test
+
+ dict.ml | 41 +++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 39 insertions(+), 2 deletions(-)
+
+commit b4bc506c5c60a0cf50f9c445ada8a6a9678772fa
+Author: inyounghong <ih235@cornell.edu>
+Date:   Tue Oct 6 15:06:19 2015 -0400
+
+    upward fixes
+
+ dict.ml | 29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
+
+commit 22cd4cfbf301e8ef50ac5f1ac020afecd32b815a
+Author: inyounghong <ih235@cornell.edu>
+Date:   Tue Oct 6 14:36:58 2015 -0400
+
+    downward insert
+
+ dict.ml | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
+
+commit 770c739d863843dd67565bf0d51d19b7bf4f7264
+Author: inyounghong <ih235@cornell.edu>
+Date:   Mon Oct 5 22:07:51 2015 -0400
+
+    Upward insert
+
+ dict.ml | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+commit c53d1566c973b23615327a84151626d2a435febf
+Author: inyounghong <ih235@cornell.edu>
+Date:   Mon Oct 5 21:05:45 2015 -0400
+
+    add fun functions
+
+ dict.ml | 49 +++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 41 insertions(+), 8 deletions(-)
+
+commit 4762d384a3b8dfc6cf5aa345e08edcd103092211
+Author: inyounghong <ih235@cornell.edu>
+Date:   Mon Oct 5 19:06:29 2015 -0400
+
+    added balance
+
+ dict.ml  | 60 ++++++++++++++++++++++++++++++++++++++++++++++++------------
+ myset.ml |  1 -
+ 2 files changed, 48 insertions(+), 13 deletions(-)
+
+commit 13112c1b1ca307952d135c0011c8c25a7e79c2ad
+Author: inyounghong <ih235@cornell.edu>
+Date:   Sat Oct 3 18:33:58 2015 -0400
+
+    fixed is empty
+
+ crawl.ml | 23 ++++++++++++++---------
+ myset.ml | 30 +++++++++++++++++++++++-------
+ 2 files changed, 37 insertions(+), 16 deletions(-)
+
+commit c0045b8dde4f1fb5ccc6616cb52e8387e33661f4
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Sat Oct 3 16:47:41 2015 -0400
+
+    crawl and basic set
+
+ crawl.ml | 55 ++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ myset.ml | 45 +++++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 95 insertions(+), 5 deletions(-)
+
+commit b82f1c81ba9b719c5a2d33bcecb0d8a272d0fa59
+Author: SophiaZhu314 <jz552@cornell.edu>
+Date:   Sat Oct 3 11:42:09 2015 -0400
+
+    testing
+
+ crawl.ml | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 8c00f8b0df1d51831089a726fd8503a0858ffb13
+Author: inyounghong <ih235@cornell.edu>
+Date:   Sat Oct 3 11:32:55 2015 -0400
+
+    testing
+
+ crawl.ml | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 018346ed082bda93cf93535cef4cf6a5f1cc7397
+Author: Michael Clarkson <clarksmr@gmail.com>
+Date:   Tue Sep 29 09:19:51 2015 -0400
+
+    Release code for CS 3110 Fall 2015 A3, Version 1.
+
+ VERSION                                            |    1 +
+ a3.txt                                             |   18 +
+ crawl.ml                                           |   79 +
+ dict.ml                                            |  821 +++
+ graph.ml                                           |  217 +
+ html/contents_motif.gif                            |  Bin 0 -> 316 bytes
+ html/expr.html                                     |  642 +++
+ html/index.html                                    |  108 +
+ html/language.html                                 |   52 +
+ html/lex.html                                      |  209 +
+ html/libgraph.gif                                  |  Bin 0 -> 2149 bytes
+ html/manual.css                                    |   30 +
+ html/manual001.html                                |  409 ++
+ html/manual002.html                                |   74 +
+ html/manual003.html                                |  629 +++
+ html/manual004.html                                |  404 ++
+ html/manual005.html                                | 1466 ++++++
+ html/manual006.html                                |  443 ++
+ html/manual007.html                                |  754 +++
+ html/manual010.html                                |   72 +
+ html/manual011.html                                |  200 +
+ html/manual013.html                                |   49 +
+ html/manual016.html                                |  207 +
+ html/manual017.html                                |  369 ++
+ html/manual018.html                                |  217 +
+ html/manual019.html                                |  166 +
+ html/next_motif.gif                                |  Bin 0 -> 317 bytes
+ html/patterns.html                                 |  119 +
+ html/previous_motif.gif                            |  Bin 0 -> 317 bytes
+ html/types.html                                    |  192 +
+ moogle.html                                        |   16 +
+ moogle.ml                                          |  247 +
+ myset.ml                                           |  287 ++
+ nodescore.ml                                       |   91 +
+ order.ml                                           |   10 +
+ pagerank.ml                                        |  273 +
+ query.ml                                           |   53 +
+ simple-html/42.html                                |    9 +
+ simple-html/abstraction.html                       |    9 +
+ simple-html/cow.html                               |    9 +
+ simple-html/functor.html                           |   10 +
+ simple-html/index.html                             |   13 +
+ simple-html/moo.html                               |    9 +
+ simple-html/ocaml.html                             |   10 +
+ util.ml                                            |  321 ++
+ wiki/2012_Kids%27_Choice_Awards                    |  798 +++
+ wiki/20th_Century_Fox                              | 2430 +++++++++
+ wiki/4Kids_Entertainment                           |  895 ++++
+ wiki/Action_figure                                 |  419 ++
+ wiki/Adolescent_Radioactive_Black_Belt_Hamsters    |  317 ++
+ wiki/African_American                              | 1658 ++++++
+ wiki/Alien_invader                                 |  469 ++
+ wiki/American_Broadcasting_Company                 | 1533 ++++++
+ wiki/Animatronic                                   |  418 ++
+ wiki/Anime                                         | 1241 +++++
+ wiki/Anthology                                     |  391 ++
+ wiki/Anthropomorphic                               |  607 +++
+ wiki/Archie_Comics                                 | 1239 +++++
+ wiki/Army_%26_Navy_Stores_(United_Kingdom)         |  333 ++
+ wiki/Austria                                       | 2347 +++++++++
+ wiki/Battletoads                                   |  717 +++
+ wiki/Baxter_Stockman                               |  596 +++
+ wiki/Beat_%27em_up                                 |  811 +++
+ wiki/Bebop_and_Rocksteady                          |  584 +++
+ wiki/Biker_Mice_from_Mars                          |  514 ++
+ wiki/Bill_%26_Ted%27s_Excellent_Adventure          |  688 +++
+ wiki/Black_people                                  |  988 ++++
+ wiki/Boris_the_Bear                                |  303 ++
+ wiki/Bradley_Fuller                                |  421 ++
+ wiki/Brainstorming                                 |  494 ++
+ wiki/Bruce_Lee                                     | 1490 ++++++
+ wiki/CBS                                           | 2101 ++++++++
+ wiki/CBS_Television_Distribution                   | 1094 ++++
+ wiki/California                                    | 2867 +++++++++++
+ wiki/Cartoon_All-Stars_to_the_Rescue               | 2261 ++++++++
+ wiki/Catalan_language                              | 2818 ++++++++++
+ wiki/Censorship                                    |  784 +++
+ wiki/Cerebus_the_Aardvark                          | 1271 +++++
+ wiki/Cheetahmen                                    |  643 +++
+ wiki/Chef_Boyardee                                 |  379 ++
+ wiki/Comic_book                                    |  824 +++
+ wiki/Cracked_(magazine)                            |  452 ++
+ wiki/DVD                                           | 1482 ++++++
+ wiki/Dan_Berger                                    |  341 ++
+ wiki/Daredevil_(Marvel_Comics)                     | 1392 +++++
+ wiki/Dave_Sim                                      | 1123 ++++
+ wiki/Dimension_X_(TMNT)                            |  642 +++
+ wiki/Disney%27s_Aladdin_(video_game)               |  665 +++
+ wiki/Disney%27s_Hollywood_Studios                  | 1215 +++++
+ wiki/Dover,_New_Hampshire                          | 1320 +++++
+ wiki/Dreamwave_Productions                         |  712 +++
+ wiki/Editorial                                     |  339 ++
+ wiki/Europe                                        | 2921 +++++++++++
+ wiki/European_Portuguese                           |  410 ++
+ wiki/Extreme_Dinosaurs                             |  508 ++
+ wiki/Fighting_game                                 |  890 ++++
+ wiki/Figurine                                      |  377 ++
+ wiki/Figurines                                     |  378 ++
+ wiki/Finland                                       | 2809 ++++++++++
+ wiki/Foot_Clan                                     |  592 +++
+ wiki/FoxBox                                        |  830 +++
+ wiki/Frank_Miller_(comics)                         | 1083 ++++
+ wiki/Fred_Wolf_Films_Dublin                        |  363 ++
+ wiki/Galician_language                             | 1872 +++++++
+ wiki/Game_Boy                                      |  936 ++++
+ wiki/Germany                                       | 3145 ++++++++++++
+ wiki/Golden_Harvest                                |  731 +++
+ wiki/Grappling_hook                                |  314 ++
+ wiki/Greg_Cipes                                    |  736 +++
+ wiki/Hair_metal                                    |  783 +++
+ wiki/Help:Installing_Japanese_character_sets       |  496 ++
+ wiki/Hostess_(brand)                               |  966 ++++
+ wiki/Housefly                                      |  535 ++
+ wiki/IDW_Publishing                                |  597 +++
+ wiki/Image_Comics                                  |  660 +++
+ wiki/Ireland                                       | 2442 +++++++++
+ wiki/Italian_language                              | 2237 ++++++++
+ wiki/Italy                                         | 3752 ++++++++++++++
+ wiki/Japan                                         | 2434 +++++++++
+ wiki/Jason_Biggs                                   |  703 +++
+ wiki/Jim_Lawson                                    |  374 ++
+ wiki/Kevin_Eastman                                 |  725 +++
+ wiki/Kevin_Michael_Richardson                      | 1548 ++++++
+ wiki/Kevin_Siembieda                               |  521 ++
+ wiki/Konami                                        |  889 ++++
+ wiki/Krang                                         |  583 +++
+ wiki/Kusarigama                                    |  763 +++
+ wiki/LeSean_Thomas                                 |  363 ++
+ wiki/Lewisham                                      |  865 ++++
+ wiki/License                                       |  569 ++
+ wiki/Lionsgate                                     |  643 +++
+ wiki/London                                        | 5420 ++++++++++++++++++++
+ wiki/MAD_Magazine                                  | 1042 ++++
+ wiki/Mae_Whitman                                   |  895 ++++
+ wiki/Mainstream                                    |  399 ++
+ wiki/Manga                                         | 1134 ++++
+ wiki/Marvel_Comics                                 | 1385 +++++
+ wiki/Megalomania                                   |  611 +++
+ wiki/Merchandise                                   |  419 ++
+ wiki/Michael_Bay                                   |  919 ++++
+ wiki/Mighty_Morphin_Power_Rangers                  | 1069 ++++
+ wiki/Mirage_Studios                                |  532 ++
+ wiki/NBC                                           | 1832 +++++++
+ wiki/Nabisco                                       |  839 +++
+ wiki/Naginata                                      |  858 ++++
+ ...National_Entertainment_Collectibles_Association |  514 ++
+ wiki/New_Line_Cinema                               | 1014 ++++
+ wiki/New_Mutants                                   | 1428 ++++++
+ wiki/New_York_City                                 | 3438 +++++++++++++
+ wiki/Nickelodeon_(TV_channel)                      | 2563 +++++++++
+ wiki/Nicktoons_(TV_channel)                        | 1361 +++++
+ wiki/Ninja                                         | 1299 +++++
+ wiki/Ninja_Turtles:_The_Next_Mutation              |  978 ++++
+ wiki/Ninjutsu                                      |  345 ++
+ wiki/Nintendo_DS                                   | 1399 +++++
+ wiki/Nintendo_Entertainment_System                 |  987 ++++
+ wiki/North_America                                 | 2183 ++++++++
+ wiki/Norway                                        | 3305 ++++++++++++
+ wiki/Nunchaku                                      |  668 +++
+ wiki/Original_video_animation                      |  482 ++
+ wiki/Orlando,_Florida                              | 2723 ++++++++++
+ wiki/Palladium_Books                               |  628 +++
+ wiki/Pangea_Corporation                            |  304 ++
+ wiki/Paramount_Pictures                            | 1341 +++++
+ wiki/Parody                                        |  710 +++
+ wiki/Peter_David                                   |  904 ++++
+ wiki/Peter_Laird                                   |  683 +++
+ wiki/Pez_dispenser                                 |  594 +++
+ wiki/Pizza_Hut                                     | 1193 +++++
+ wiki/Platinum_Dunes                                |  687 +++
+ wiki/Player_character                              |  860 ++++
+ wiki/Playmates_Toys_Inc                            |  412 ++
+ wiki/Playset                                       |  330 ++
+ wiki/Poland                                        | 3793 ++++++++++++++
+ wiki/Pop_culture                                   |  465 ++
+ wiki/Portsmouth,_New_Hampshire                     | 1470 ++++++
+ wiki/Portugal                                      | 3907 ++++++++++++++
+ wiki/Power_Rangers                                 |  840 +++
+ wiki/Power_Rangers_in_Space                        | 1011 ++++
+ wiki/Power_rock                                    |  601 +++
+ wiki/Pre-Teen_Dirty-Gene_Kung_Fu_Kangaroos         |  487 ++
+ wiki/Print_syndication                             |  338 ++
+ wiki/Radio_City_Music_Hall                         |  906 ++++
+ wiki/Ralston-Purina                                |  774 +++
+ wiki/Rated_18                                      |  334 ++
+ wiki/Reboot_(fiction)                              |  763 +++
+ wiki/Rob_Paulsen                                   |  642 +++
+ wiki/Rock_n%27_roll                                | 1277 +++++
+ wiki/Role-playing_game                             |  590 +++
+ wiki/Ronin_(DC_Comics)                             |  543 ++
+ wiki/Ryan_Brown_(comics)                           |  381 ++
+ wiki/Saban_Capital_Group                           |  626 +++
+ wiki/Saban_Entertainment                           |  883 ++++
+ wiki/Saint_Seiya                                   | 1160 +++++
+ wiki/Sean_Astin                                    |  967 ++++
+ wiki/Sega_Genesis                                  | 1169 +++++
+ wiki/Self-publishing                               |  501 ++
+ wiki/Sensei                                        | 1008 ++++
+ wiki/Shredder_(TMNT)                               |  787 +++
+ wiki/Shreddies                                     |  372 ++
+ wiki/Side-scrolling_game                           |  496 ++
+ wiki/Skateboard                                    |  744 +++
+ wiki/Skeleton_Warriors                             |  605 +++
+ wiki/Society                                       |  960 ++++
+ wiki/Spain                                         | 3430 +++++++++++++
+ wiki/Spanish_language                              | 3842 ++++++++++++++
+ wiki/Splinter_(TMNT)                               |  616 +++
+ wiki/Star_Trek                                     | 1320 +++++
+ wiki/Stephen_Murphy_(comics)                       |  391 ++
+ wiki/Stone_Protectors                              |  543 ++
+ wiki/Street_Fighter                                |  936 ++++
+ wiki/Street_Sharks                                 |  971 ++++
+ wiki/Super_Nintendo_Entertainment_System           | 1038 ++++
+ wiki/Super_Sentai                                  |  526 ++
+ wiki/Superhero                                     |  816 +++
+ wiki/Sweden                                        | 2482 +++++++++
+ wiki/TMNT_(film)                                   |  775 +++
+ wiki/TMNT_(video_game)                             |  630 +++
+ wiki/Tales_of_the_Teenage_Mutant_Ninja_Turtles     |  522 ++
+ wiki/Tax_refund                                    |  478 ++
+ wiki/Teenage_Mutant_Ninja_Turtles                  | 1046 ++++
+ ...age_Mutant_Ninja_Turtles:_Fall_of_the_Foot_Clan |  480 ++
+ ...nage_Mutant_Ninja_Turtles:_The_Hyperstone_Heist |  550 ++
+ ...enage_Mutant_Ninja_Turtles:_Tournament_Fighters |  702 +++
+ wiki/Teenage_Mutant_Ninja_Turtles:_Turtles_in_Time |  907 ++++
+ ...nage_Mutant_Ninja_Turtles_%26_Other_Strangeness |  810 +++
+ wiki/Teenage_Mutant_Ninja_Turtles_(1987_TV_series) | 1069 ++++
+ .../Teenage_Mutant_Ninja_Turtles_(2003_video_game) |  498 ++
+ wiki/Teenage_Mutant_Ninja_Turtles_(IDW_Publishing) |  545 ++
+ wiki/Teenage_Mutant_Ninja_Turtles_(NES_game)       |  527 ++
+ wiki/Teenage_Mutant_Ninja_Turtles_(arcade_game)    |  558 ++
+ wiki/Teenage_Mutant_Ninja_Turtles_(film)           |  771 +++
+ wiki/Teenage_Mutant_Ninja_Turtles_2:_Battle_Nexus  |  516 ++
+ ...eenage_Mutant_Ninja_Turtles_3:_Mutant_Nightmare |  518 ++
+ wiki/Teenage_Mutant_Ninja_Turtles_Adventures       |  921 ++++
+ ...rtles_Adventures_(role-playing_game_supplement) |  811 +++
+ ...nage_Mutant_Ninja_Turtles_Guide_to_the_Universe |  585 +++
+ ...e_Mutant_Ninja_Turtles_II:_Back_from_the_Sewers |  481 ++
+ ...Mutant_Ninja_Turtles_II:_The_Secret_of_the_Ooze |  745 +++
+ wiki/Teenage_Mutant_Ninja_Turtles_III              |  770 +++
+ ...eenage_Mutant_Ninja_Turtles_III:_Radical_Rescue |  463 ++
+ ...Mutant_Ninja_Turtles_III:_The_Manhattan_Project |  507 ++
+ wiki/Teenage_Mutant_Ninja_Turtles_action_figures   |  739 +++
+ wiki/Teenage_Mutant_Ninja_Turtles_comic_strip      |  501 ++
+ wiki/The_CW4Kids                                   |  822 +++
+ wiki/Toy                                           |  680 +++
+ wiki/Transdimensional_Teenage_Mutant_Ninja_Turtles |  598 +++
+ wiki/Truckin%27_Turtles                            |  583 +++
+ wiki/Turtle                                        | 1741 +++++++
+ wiki/Turtles_Forever                               |  650 +++
+ wiki/Turtles_Go_Hollywood                          |  579 +++
+ wiki/USA_Network                                   | 1335 +++++
+ wiki/Ubisoft                                       |  818 +++
+ wiki/United_Kingdom                                | 3975 ++++++++++++++
+ wiki/Valencian                                     | 1454 ++++++
+ wiki/Venus_(Teenage_Mutant_Ninja_Turtles)          |  610 +++
+ wiki/Viacom                                        | 1075 ++++
+ wiki/Violence                                      |  877 ++++
+ wiki/Virtual_Console                               | 1110 ++++
+ wiki/Warner_Bros.                                  | 1616 ++++++
+ wiki/Westinghouse_Broadcasting                     | 1310 +++++
+ wiki/White_people                                  | 1369 +++++
+ wiki/Wii                                           | 1362 +++++
+ wiki/Wikipedia:Citation_needed                     |  327 ++
+ wiki/Wild_West_C.O.W.-Boys_of_Moo_Mesa             |  783 +++
+ wiki/Wildcats_(comics)                             |  779 +++
+ wiki/Will_Vinton                                   |  469 ++
+ wiki/Wu_Xing                                       | 1219 +++++
+ 268 files changed, 240647 insertions(+)
