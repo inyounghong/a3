@@ -186,10 +186,7 @@ struct
     List.iter (fun k -> assert(member s2 k)) elts2 ;
 
     (* Inserting the same element into list *)
-    let elt1 = C.gen_random () in
-    let s3 = insert elt1 empty in
-    let s4 = insert elt1 s3 in
-    assert(s3 = s4);
+
     ()
 
   let test_remove () =

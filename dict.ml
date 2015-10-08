@@ -226,13 +226,26 @@ struct
       (D.gen_key_random(), D.gen_value()) :: (generate_random_list (size - 1))
 
   let test_insert () =
+    (* Insert into dict *)
     let pairs1 = generate_pair_list 26 in
     let d1 = insert_list empty pairs1 in
     List.iter (fun (k,v) -> assert(lookup d1 k = Some v)) pairs1 ;
+
+    (* Inserting into existing dict *)
+    let pairs2 = generate_pair_list 10 in
+    let s2 = insert_list d1 pairs2 in
+    List.iter (fun (k,v) -> assert(lookup s2 k = Some v)) pairs2 ;
+    List.iter (fun (k,v) -> assert(lookup s2 k = Some v)) pairs2 ;
+
+    (* Inserting the same element into dict *)
+    let pair = D.gen_pair () in
+    let s3 = insert empty (fst pair) (snd pair) in
+    let s4 = insert s3 (fst pair) (snd pair) in
+    assert(s3 = s4);
     ()
 
   let test_remove () =
-
+    (* Remove elements from dict *)
     let pairs1 = generate_pair_list 26 in
     let d1 = insert_list empty pairs1 in
     List.iter
@@ -244,10 +257,13 @@ struct
             else assert(lookup r k2 = Some v2)
           ) pairs1
       ) pairs1 ;
+
+    (* Remove from empty dict -> empty dict *)
+    let pair = D.gen_pair() in
+    (assert ((remove empty (fst pair)) = empty)) ;
     ()
 
   let test_lookup () =
-
     let pairs1 = generate_pair_list 26 in
     let d1 = insert_list empty pairs1 in
     List.iter (fun (k,v) -> assert(lookup d1 k = Some v)) pairs1 ;
@@ -255,11 +271,14 @@ struct
     ()
 
   let test_choose () =
+    (* Choose from empty dict -> None *)
     assert(choose empty = None) ;
+
+    (* Choose from dict *)
     let pairs1 = generate_pair_list 26 in
     let result1 =
     (match pairs1 with
-    | [] -> failwith "not possible"
+    | [] -> failwith "empty dict"
     | (k,v)::rest -> Some(k,v,rest)) in
 
     let d1 = insert_list empty pairs1 in
@@ -267,9 +286,12 @@ struct
     ()
 
   let test_member () =
+    (* Test member *)
     let pairs1 = generate_pair_list 26 in
     let d1 = insert_list empty pairs1 in
     List.iter (fun (k,v) -> assert(member d1 k = true)) pairs1 ;
+
+    (* Test member of empty dict -> all false *)
     List.iter (fun (k,v) -> assert(member empty k = false)) pairs1 ;
     ()
 
@@ -284,7 +306,8 @@ struct
     let f1 (k:key) (v:value) (s:string) =
       ((string_of_key k)^(string_of_value v)^s) in
     (assert (fold f1 "" d1 = str));
-    (*empty*)
+
+    (* Fold with empty dict*)
     (assert (fold f1 "" empty = ""));
 
     ()
@@ -397,7 +420,8 @@ struct
           let left1 = treeToList left in
           let middle1 = treeToList middle in
           let right1 = treeToList right in
-          (k1,v1)::(k2,v2)::(List.rev_append (List.rev_append left1 right1) middle1)
+          (k1,v1)::(k2,v2)::
+            (List.rev_append (List.rev_append left1 right1) middle1)
 
   (* TODO:
    * Implement fold. Read the specification in the DICT signature above. *)
@@ -407,7 +431,6 @@ struct
   it returns a 'a*)
   let rec fold (f: key -> value -> 'a -> 'a) (u: 'a) (d: dict) : 'a =
     List.fold_left (fun a (k, v) -> f k v a) u (treeToList d)
-
 
 
   (* TODO:
@@ -446,7 +469,6 @@ struct
     string_of_tree d
 
 
-
   (* Upward phase for w where its parent is a Two node whose (key,value) is x.
    * One of x's children is w, and the other child is x_other. This function
    * should return a kicked-up configuration containing the new tree as a
@@ -478,9 +500,9 @@ struct
     | Eq   -> Up(Two(w_left, w, w_right), x, Two(other_left, y, other_right))
     | Greater ->
         (match D.compare (fst w) (fst y) with
-          | Less -> Up(Two(other_left, x, w_left), w, Two(w_right, y, other_right))
-          | Greater -> Up(Two(other_left, x, other_right), y, Two(w_left, w, w_right))
-          | Eq -> Up(Two(other_left, x, other_right), y, Two(w_left, w, w_right)) )
+          | Less -> Up(Two(other_left, x, w_left),w, Two(w_right,y,other_right))
+          | Greater -> Up(Two(other_left,x,other_right),y,Two(w_left,w,w_right))
+          | Eq -> Up(Two(other_left, x, other_right), y, Two(w_left,w,w_right)))
 
   (* Downward phase for inserting (k,v) into our dictionary d.
    * The downward phase returns a "kicked" up configuration, where
@@ -511,8 +533,6 @@ struct
    * of f. *)
 
 
-
-
   (* insert_downward should handle the base case when inserting into a Leaf,
    * and if our dictionary d is a Two-node or a Three-node, we call the
    * corresponding functions insert_downward_two or insert_downward_three
@@ -522,12 +542,9 @@ struct
       | Leaf -> (Up(Leaf, (k, v), Leaf)) ;
       | Two(Leaf,(k1,v1),Leaf) ->
           (match D.compare k k1 with
-            | Less ->
-                Done(Three(Leaf,(k,v),Leaf,(k1,v1),Leaf))
-            | Greater ->
-                Done(Three(Leaf,(k1,v1),Leaf,(k,v),Leaf))
-            | Eq ->
-                Done(Two(Leaf,(k1,v),Leaf))
+            | Less -> Done(Three(Leaf,(k,v),Leaf,(k1,v1),Leaf))
+            | Greater -> Done(Three(Leaf,(k1,v1),Leaf,(k,v),Leaf))
+            | Eq -> Done(Two(Leaf,(k1,v),Leaf))
           )
       | Two(left,n,right) ->
           (match D.compare k (fst n) with
@@ -607,7 +624,6 @@ struct
    * are the two subtrees of the current Two node. *)
   and insert_downward_two ((k,v): pair) ((k1,v1): pair)
       (left: dict) (right: dict) : kicked =
-    (* Printf.printf "\ndownward2\n"; *)
     match D.compare (k) (k1) with
     | Less -> insert_downward left k v
     | Greater -> insert_downward right k v
@@ -960,8 +976,6 @@ struct
     let k2 = D.gen_key_lt k1 () in
     let v2 = D.gen_value () in
     let leaf_three = insert leaf_two k2 v1 in
-
-    (* Printf.printf "%s" (string_of_tree leaf_three); *)
     assert(leaf_three=Three(Leaf,(k2,v1),Leaf,(k1,v1),Leaf)) ;
 
     (* insert same key *)
